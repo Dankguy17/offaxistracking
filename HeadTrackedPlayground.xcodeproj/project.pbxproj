@@ -19,6 +19,9 @@
 		A0000000000000000000002D /* CameraPanelPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001D /* CameraPanelPlaceholderView.swift */; };
 		A0000000000000000000002E /* RendererPanelPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001E /* RendererPanelPlaceholderView.swift */; };
 		A0000000000000000000002F /* InspectorPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001F /* InspectorPanel.swift */; };
+		A00000000000000000000030 /* CameraFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000020 /* CameraFrame.swift */; };
+		A00000000000000000000033 /* CameraCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000036 /* CameraCaptureService.swift */; };
+		A00000000000000000000035 /* CameraSessionPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000034 /* CameraSessionPreview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +42,9 @@
 		A0000000000000000000001D /* CameraPanelPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPanelPlaceholderView.swift; sourceTree = "<group>"; };
 		A0000000000000000000001E /* RendererPanelPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererPanelPlaceholderView.swift; sourceTree = "<group>"; };
 		A0000000000000000000001F /* InspectorPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorPanel.swift; sourceTree = "<group>"; };
+		A00000000000000000000020 /* CameraFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFrame.swift; sourceTree = "<group>"; };
+		A00000000000000000000036 /* CameraCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureService.swift; sourceTree = "<group>"; };
+		A00000000000000000000034 /* CameraSessionPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSessionPreview.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				A0000000000000000000001D /* CameraPanelPlaceholderView.swift */,
+				A00000000000000000000034 /* CameraSessionPreview.swift */,
 				A0000000000000000000001F /* InspectorPanel.swift */,
 				A0000000000000000000001E /* RendererPanelPlaceholderView.swift */,
 				A00000000000000000000013 /* RootView.swift */,
@@ -126,6 +133,7 @@
 		A00000000000000000000047 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				A00000000000000000000036 /* CameraCaptureService.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -170,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				A00000000000000000000019 /* CalibrationProfile.swift */,
+				A00000000000000000000020 /* CameraFrame.swift */,
 				A0000000000000000000001B /* DebugMetrics.swift */,
 				A00000000000000000000016 /* HeadPose.swift */,
 				A0000000000000000000001A /* ProjectionParameters.swift */,
@@ -294,9 +303,12 @@
 			files = (
 				A00000000000000000000021 /* HeadTrackedPlaygroundApp.swift in Sources */,
 				A00000000000000000000022 /* AppModel.swift in Sources */,
+				A00000000000000000000033 /* CameraCaptureService.swift in Sources */,
 				A0000000000000000000002C /* CalibrationManager.swift in Sources */,
 				A00000000000000000000029 /* CalibrationProfile.swift in Sources */,
 				A0000000000000000000002D /* CameraPanelPlaceholderView.swift in Sources */,
+				A00000000000000000000030 /* CameraFrame.swift in Sources */,
+				A00000000000000000000035 /* CameraSessionPreview.swift in Sources */,
 				A0000000000000000000002B /* DebugMetrics.swift in Sources */,
 				A00000000000000000000026 /* HeadPose.swift in Sources */,
 				A0000000000000000000002F /* InspectorPanel.swift in Sources */,

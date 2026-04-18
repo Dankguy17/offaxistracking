@@ -10,6 +10,8 @@ Native Xcode macOS app scaffold with the first application-state layer in place:
 - shared tracking, pose, projection, and debug models
 - split SwiftUI layout for camera, renderer, and inspector panels
 - projection freeze and calibration controls wired into app state
+- live built-in webcam capture through `AVFoundation`
+- embedded camera preview surface in the playground UI
 
 ## Requirements
 
@@ -23,6 +25,7 @@ Native Xcode macOS app scaffold with the first application-state layer in place:
 3. Run the app on macOS.
 
 The current shell launches without camera or rendering active yet, but the calibration/debug UI is live and persists its settings across launches.
+The camera preview now starts on launch and requests macOS camera permission if needed.
 
 ## Planned Architecture
 

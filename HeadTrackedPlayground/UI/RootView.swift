@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct RootView: View {
+    @EnvironmentObject private var appModel: AppModel
+
     var body: some View {
         HStack(spacing: 0) {
             VStack(spacing: 18) {
@@ -13,7 +15,7 @@ struct RootView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                CameraPanelPlaceholderView()
+                CameraPanelPlaceholderView(cameraCaptureService: appModel.cameraCaptureService)
                 RendererPanelPlaceholderView()
             }
             .padding(24)
@@ -33,6 +35,9 @@ struct RootView: View {
                 endPoint: .bottomTrailing
             )
         )
+        .task {
+            appModel.startServices()
+        }
     }
 }
 
