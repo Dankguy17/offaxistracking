@@ -1,6 +1,9 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Fixed a renderer crash in the workspace floor-grid setup by correcting the `z` span ordering and normalizing grid ranges inside the helper before iterating.
+- Files/components affected: `Rendering/MetalRenderer.swift`.
+- Reason: prevent the Metal workspace from aborting at launch when a reversed `ClosedRange` slips into grid generation.
 - Replaced the abstract renderer primitives with a simple but recognizable workspace scene containing a room shell, floor grid, window, desk, monitor, cabinet, shelf, and plant props.
 - Added line-art edge cues around the key furniture pieces and window frame so parallax is easier to read during head motion.
 - Updated the renderer panel copy and README to describe the new workspace-oriented scene.

@@ -128,7 +128,7 @@ final class MetalRenderer: NSObject {
 
         appendFloorGrid(
             xRange: -1.8 ... 1.8,
-            zRange: -0.45 ... -3.15,
+            zRange: -3.15 ... -0.45,
             y: -0.958,
             step: 0.3,
             color: gridColor,
@@ -265,22 +265,27 @@ final class MetalRenderer: NSObject {
         color: SIMD4<Float>,
         into vertices: inout [RenderVertex]
     ) {
-        var x = xRange.lowerBound
-        while x <= xRange.upperBound + 0.0001 {
+        guard step > 0 else { return }
+
+        let normalizedXRange = min(xRange.lowerBound, xRange.upperBound) ... max(xRange.lowerBound, xRange.upperBound)
+        let normalizedZRange = min(zRange.lowerBound, zRange.upperBound) ... max(zRange.lowerBound, zRange.upperBound)
+
+        var x = normalizedXRange.lowerBound
+        while x <= normalizedXRange.upperBound + 0.0001 {
             appendLine(
-                from: SIMD3<Float>(x, y, zRange.lowerBound),
-                to: SIMD3<Float>(x, y, zRange.upperBound),
+                from: SIMD3<Float>(x, y, normalizedZRange.lowerBound),
+                to: SIMD3<Float>(x, y, normalizedZRange.upperBound),
                 color: color,
                 into: &vertices
             )
             x += step
         }
 
-        var z = zRange.lowerBound
-        while z <= zRange.upperBound + 0.0001 {
+        var z = normalizedZRange.lowerBound
+        while z <= normalizedZRange.upperBound + 0.0001 {
             appendLine(
-                from: SIMD3<Float>(xRange.lowerBound, y, z),
-                to: SIMD3<Float>(xRange.upperBound, y, z),
+                from: SIMD3<Float>(normalizedXRange.lowerBound, y, z),
+                to: SIMD3<Float>(normalizedXRange.upperBound, y, z),
                 color: color,
                 into: &vertices
             )
