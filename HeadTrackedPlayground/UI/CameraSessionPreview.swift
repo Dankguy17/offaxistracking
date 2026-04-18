@@ -4,16 +4,19 @@ import SwiftUI
 
 struct CameraSessionPreview: NSViewRepresentable {
     let session: AVCaptureSession
+    let isMirrored: Bool
 
     func makeNSView(context: Context) -> PreviewContainerView {
         let view = PreviewContainerView()
         view.previewLayer.videoGravity = .resizeAspectFill
         view.previewLayer.session = session
+        view.applyMirroring(isMirrored)
         return view
     }
 
     func updateNSView(_ nsView: PreviewContainerView, context: Context) {
         nsView.previewLayer.session = session
+        nsView.applyMirroring(isMirrored)
     }
 }
 
@@ -36,5 +39,14 @@ final class PreviewContainerView: NSView {
     override func layout() {
         super.layout()
         previewLayer.frame = bounds
+    }
+
+    func applyMirroring(_ isMirrored: Bool) {
+        guard let connection = previewLayer.connection, connection.isVideoMirroringSupported else {
+            return
+        }
+
+        connection.automaticallyAdjustsVideoMirroring = false
+        connection.isVideoMirrored = isMirrored
     }
 }

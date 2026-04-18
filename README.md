@@ -10,6 +10,7 @@ Native Xcode macOS app scaffold with an end-to-end prototype slice in place:
 - shared tracking, pose, projection, and debug models
 - split SwiftUI layout for camera, renderer, and inspector panels
 - projection freeze and calibration controls wired into app state
+- mirrored/unmirrored webcam toggle so preview, overlay, and horizontal pose math stay aligned with the active camera orientation
 - live built-in webcam capture through `AVFoundation`
 - embedded camera preview surface in the playground UI
 - Vision-powered single-face acquisition, box tracking, and landmark overlay
@@ -36,6 +37,7 @@ Once a face is acquired, the app tracks a single primary face between frames, ov
 The Metal viewport renders a switchable scene set with live off-axis projection driven by the smoothed pose values from the inspector.
 Use the `Scene` control in the inspector to swap between the workspace room and the target tunnel environment.
 Enable `Freeze Projection` in the inspector to hold the currently applied scene projection steady while pose values and tracking debug output continue updating.
+Use `Mirror Webcam` in the calibration inspector if your camera feed appears mirrored and horizontal motion feels inverted relative to the rendered scene.
 
 ## Notes
 

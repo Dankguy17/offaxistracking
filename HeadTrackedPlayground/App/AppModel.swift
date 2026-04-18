@@ -138,7 +138,7 @@ final class AppModel: ObservableObject {
 
     func captureNeutralPose() {
         if let observation = trackedFaceState.observation {
-            let faceCenter = poseEstimator.faceCenter(for: observation)
+            let faceCenter = poseEstimator.faceCenter(for: observation, calibration: calibrationProfile)
             calibrationProfile.neutralFaceCenterX = faceCenter.x
             calibrationProfile.neutralFaceCenterY = faceCenter.y
             calibrationProfile.baselineInterEyeDistance = poseEstimator.depthSignal(

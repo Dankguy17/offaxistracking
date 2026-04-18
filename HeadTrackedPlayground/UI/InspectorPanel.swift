@@ -27,6 +27,7 @@ struct InspectorPanel: View {
                 }
 
                 GroupBox("Display Calibration") {
+                    Toggle("Mirror Webcam", isOn: $appModel.calibrationProfile.isWebcamMirrored)
                     NumericField(title: "Display Width (m)", value: $appModel.calibrationProfile.displayWidthMeters)
                     NumericField(title: "Display Height (m)", value: $appModel.calibrationProfile.displayHeightMeters)
                     NumericField(title: "Webcam X Offset (m)", value: $appModel.calibrationProfile.webcamOffsetXMeters)

@@ -6,7 +6,10 @@ struct PoseEstimator {
             return nil
         }
 
-        let centerX = observation.boundingBox.x + (observation.boundingBox.width * 0.5)
+        let centerX = horizontalPosition(
+            observation.boundingBox.x + (observation.boundingBox.width * 0.5),
+            isMirrored: calibration.isWebcamMirrored
+        )
         let centerY = observation.boundingBox.y + (observation.boundingBox.height * 0.5)
 
         let depthSignal = depthSignal(for: observation, useCoarseFallback: trackedFaceState.isUsingCoarseFallback)
@@ -42,7 +45,20 @@ struct PoseEstimator {
 
     func faceCenter(for observation: FaceObservation2D) -> (x: Double, y: Double) {
         (
-            observation.boundingBox.x + (observation.boundingBox.width * 0.5),
+            horizontalPosition(
+                observation.boundingBox.x + (observation.boundingBox.width * 0.5),
+                isMirrored: false
+            ),
+            observation.boundingBox.y + (observation.boundingBox.height * 0.5)
+        )
+    }
+
+    func faceCenter(for observation: FaceObservation2D, calibration: CalibrationProfile) -> (x: Double, y: Double) {
+        (
+            horizontalPosition(
+                observation.boundingBox.x + (observation.boundingBox.width * 0.5),
+                isMirrored: calibration.isWebcamMirrored
+            ),
             observation.boundingBox.y + (observation.boundingBox.height * 0.5)
         )
     }
@@ -58,5 +74,9 @@ struct PoseEstimator {
             x: summed.x / Double(points.count),
             y: summed.y / Double(points.count)
         )
+    }
+
+    private func horizontalPosition(_ x: Double, isMirrored: Bool) -> Double {
+        isMirrored ? (1 - x) : x
     }
 }

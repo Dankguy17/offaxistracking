@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FaceTrackingOverlayView: View {
     let trackedFaceState: TrackedFaceState
+    let isMirrored: Bool
 
     var body: some View {
         GeometryReader { geometry in
@@ -29,7 +30,8 @@ struct FaceTrackingOverlayView: View {
     private func rect(for rect: NormalizedRect, in size: CGSize) -> CGRect {
         let width = rect.width * size.width
         let height = rect.height * size.height
-        let x = rect.x * size.width
+        let normalizedX = isMirrored ? (1 - rect.x - rect.width) : rect.x
+        let x = normalizedX * size.width
         let y = (1 - rect.y - rect.height) * size.height
         return CGRect(x: x, y: y, width: width, height: height)
     }
@@ -38,7 +40,8 @@ struct FaceTrackingOverlayView: View {
         var path = Path()
 
         for (index, point) in points.enumerated() {
-            let transformed = CGPoint(x: point.x * size.width, y: (1 - point.y) * size.height)
+            let normalizedX = isMirrored ? (1 - point.x) : point.x
+            let transformed = CGPoint(x: normalizedX * size.width, y: (1 - point.y) * size.height)
             if index == 0 {
                 path.move(to: transformed)
             } else {

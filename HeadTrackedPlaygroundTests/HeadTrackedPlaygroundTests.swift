@@ -13,6 +13,37 @@ final class HeadTrackedPlaygroundTests: XCTestCase {
         XCTAssertEqual(decoded, profile)
     }
 
+    func testCalibrationProfileDecodesLegacyPayloadWithoutMirrorFlag() throws {
+        let legacyJSON = """
+        {
+          "displayWidthMeters" : 0.345,
+          "displayHeightMeters" : 0.215,
+          "webcamOffsetXMeters" : 0,
+          "webcamOffsetYMeters" : 0.012,
+          "webcamOffsetZMeters" : 0,
+          "neutralFaceCenterX" : 0.5,
+          "neutralFaceCenterY" : 0.5,
+          "neutralHeadPose" : {
+            "x" : 0,
+            "y" : 0,
+            "z" : 0.6,
+            "confidence" : 0,
+            "timestamp" : 0
+          },
+          "baselineInterEyeDistance" : 0.13,
+          "lateralSmoothing" : 0.2,
+          "depthSmoothing" : 0.15,
+          "fallbackHoldDuration" : 0.45,
+          "reacquireInterval" : 1
+        }
+        """
+
+        let decoded = try JSONDecoder().decode(CalibrationProfile.self, from: Data(legacyJSON.utf8))
+
+        XCTAssertFalse(decoded.isWebcamMirrored)
+        XCTAssertEqual(decoded.displayWidthMeters, CalibrationProfile.default.displayWidthMeters, accuracy: 0.0001)
+    }
+
     func testPoseEstimatorReturnsNearZeroXYForNeutralFaceCenter() {
         var profile = CalibrationProfile.default
         profile.neutralFaceCenterX = 0.5
@@ -44,6 +75,38 @@ final class HeadTrackedPlaygroundTests: XCTestCase {
         XCTAssertNotNil(pose)
         XCTAssertEqual(pose?.x ?? 1, 0, accuracy: 0.0001)
         XCTAssertEqual(pose?.y ?? 1, 0, accuracy: 0.0001)
+    }
+
+    func testPoseEstimatorMirrorsHorizontalPoseWhenCalibrationRequiresIt() {
+        var profile = CalibrationProfile.default
+        profile.isWebcamMirrored = true
+        profile.neutralFaceCenterX = 0.5
+        profile.neutralFaceCenterY = 0.5
+        profile.displayWidthMeters = 0.4
+        profile.neutralHeadPose = HeadPose(x: 0, y: 0, z: 0.6, confidence: 1, timestamp: 0)
+        profile.baselineInterEyeDistance = 0.1
+
+        let observation = FaceObservation2D(
+            boundingBox: NormalizedRect(x: 0.65, y: 0.35, width: 0.2, height: 0.3),
+            leftEye: [NormalizedPoint(x: 0.7, y: 0.55)],
+            rightEye: [NormalizedPoint(x: 0.8, y: 0.55)],
+            nose: [],
+            detectionConfidence: 1,
+            landmarkConfidence: 1,
+            timestamp: 1
+        )
+
+        let pose = PoseEstimator().estimatePose(
+            from: TrackedFaceState(
+                observation: observation,
+                status: TrackingStatus(mode: .trackingFine, confidence: 1, lastUpdateAge: 0),
+                isUsingCoarseFallback: false
+            ),
+            calibration: profile
+        )
+
+        XCTAssertNotNil(pose)
+        XCTAssertEqual(pose?.x ?? 1, -0.1, accuracy: 0.0001)
     }
 
     func testPoseEstimatorDepthDecreasesWhenEyesAppearFurtherApart() {

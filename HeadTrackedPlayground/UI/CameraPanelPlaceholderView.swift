@@ -14,10 +14,16 @@ struct CameraPanelPlaceholderView: View {
                     .fill(Color.black.opacity(0.85))
 
                 if cameraCaptureService.authorizationStatus == .authorized {
-                    CameraSessionPreview(session: cameraCaptureService.session)
+                    CameraSessionPreview(
+                        session: cameraCaptureService.session,
+                        isMirrored: appModel.calibrationProfile.isWebcamMirrored
+                    )
                         .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
                         .overlay {
-                            FaceTrackingOverlayView(trackedFaceState: appModel.trackedFaceState)
+                            FaceTrackingOverlayView(
+                                trackedFaceState: appModel.trackedFaceState,
+                                isMirrored: appModel.calibrationProfile.isWebcamMirrored
+                            )
                                 .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
                         }
                         .overlay(alignment: .topLeading) {

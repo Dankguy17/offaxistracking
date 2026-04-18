@@ -1,6 +1,11 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Added a persisted `Mirror Webcam` calibration toggle and applied it consistently to the camera preview, landmark overlay, neutral-pose capture, and horizontal pose estimation path.
+- Added a backward-compatible calibration decoder so older saved profiles still load after introducing the new mirroring flag.
+- Added regression tests covering mirrored horizontal pose estimation and legacy calibration decoding.
+- Files/components affected: `Models/CalibrationProfile.swift`, `Pose/PoseEstimator.swift`, `App/AppModel.swift`, `UI/CameraSessionPreview.swift`, `UI/FaceTrackingOverlayView.swift`, `UI/CameraPanelPlaceholderView.swift`, `UI/InspectorPanel.swift`, `HeadTrackedPlaygroundTests/HeadTrackedPlaygroundTests.swift`, `README.md`.
+- Reason: let operators correct mirrored vs. unmirrored webcam behavior without breaking overlay alignment or existing saved calibration files.
 - Added a second Metal environment, `Target Tunnel`, with wireframe depth frames and flat billboard target objects to mimic an almost-3D display volume.
 - Added an inspector scene switcher and viewport labels so the active environment can be changed live while preserving the same head-tracked off-axis projection path.
 - Files/components affected: `App/AppModel.swift`, `Rendering/MetalRenderer.swift`, `UI/InspectorPanel.swift`, `UI/RendererPanelPlaceholderView.swift`, `README.md`, `HeadTrackedPlaygroundTests/HeadTrackedPlaygroundTests.swift`.
