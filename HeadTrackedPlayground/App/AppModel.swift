@@ -14,6 +14,8 @@ final class AppModel: ObservableObject {
     private let calibrationManager: CalibrationManager
     let cameraCaptureService: CameraCaptureService
     let faceTrackingService: FaceTrackingService
+    private let poseEstimator = PoseEstimator()
+    private let poseSmoother = PoseSmoother()
     private var cancellables = Set<AnyCancellable>()
     private var hasStartedServices = false
 
@@ -51,6 +53,7 @@ final class AppModel: ObservableObject {
                 guard let self else { return }
                 trackedFaceState = state
                 trackingStatus = state.status
+                recomputePose(using: state)
             }
             .store(in: &cancellables)
 
@@ -74,7 +77,17 @@ final class AppModel: ObservableObject {
     }
 
     func captureNeutralPose() {
+        if let observation = trackedFaceState.observation {
+            let faceCenter = poseEstimator.faceCenter(for: observation)
+            calibrationProfile.neutralFaceCenterX = faceCenter.x
+            calibrationProfile.neutralFaceCenterY = faceCenter.y
+            calibrationProfile.baselineInterEyeDistance = poseEstimator.depthSignal(
+                for: observation,
+                useCoarseFallback: trackedFaceState.isUsingCoarseFallback
+            )
+        }
         calibrationProfile.neutralHeadPose = smoothedPose
+        poseSmoother.reset(to: smoothedPose)
         persistCalibration()
     }
 
@@ -82,6 +95,7 @@ final class AppModel: ObservableObject {
         calibrationProfile = .default
         rawPose = calibrationProfile.neutralHeadPose
         smoothedPose = calibrationProfile.neutralHeadPose
+        poseSmoother.reset(to: smoothedPose)
         persistCalibration()
     }
 
@@ -89,8 +103,25 @@ final class AppModel: ObservableObject {
         do {
             try calibrationManager.saveProfile(calibrationProfile)
             faceTrackingService.reacquireInterval = calibrationProfile.reacquireInterval
+            recomputePose(using: trackedFaceState)
         } catch {
             print("Failed to save calibration profile: \(error.localizedDescription)")
         }
+    }
+
+    private func recomputePose(using trackedFaceState: TrackedFaceState) {
+        let now = trackedFaceState.observation?.timestamp ?? Date().timeIntervalSinceReferenceDate
+        let estimatedPose = poseEstimator.estimatePose(from: trackedFaceState, calibration: calibrationProfile)
+
+        if let estimatedPose {
+            rawPose = estimatedPose
+        }
+
+        smoothedPose = poseSmoother.update(
+            rawPose: estimatedPose,
+            trackingStatus: trackedFaceState.status,
+            calibration: calibrationProfile,
+            now: now
+        )
     }
 }

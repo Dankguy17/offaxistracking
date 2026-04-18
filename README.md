@@ -14,6 +14,8 @@ Native Xcode macOS app scaffold with the first application-state layer in place:
 - embedded camera preview surface in the playground UI
 - Vision-powered single-face acquisition, box tracking, and landmark overlay
 - coarse face-box fallback when landmarks temporarily disappear
+- raw and smoothed head-pose estimation for `x`, `y`, and approximate `z`
+- off-axis projection math utilities ready to drive the Metal renderer
 
 ## Requirements
 
@@ -29,6 +31,7 @@ Native Xcode macOS app scaffold with the first application-state layer in place:
 The current shell launches without camera or rendering active yet, but the calibration/debug UI is live and persists its settings across launches.
 The camera preview now starts on launch and requests macOS camera permission if needed.
 Once a face is acquired, the app tracks a single primary face between frames and overlays the tracked face box plus available landmark strokes on the preview.
+The inspector’s pose values now respond to tracked head movement and use calibration values for neutral center, smoothing, and approximate depth.
 
 ## Planned Architecture
 

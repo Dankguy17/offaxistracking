@@ -32,6 +32,8 @@ struct InspectorPanel: View {
                     NumericField(title: "Webcam X Offset (m)", value: $appModel.calibrationProfile.webcamOffsetXMeters)
                     NumericField(title: "Webcam Y Offset (m)", value: $appModel.calibrationProfile.webcamOffsetYMeters)
                     NumericField(title: "Webcam Z Offset (m)", value: $appModel.calibrationProfile.webcamOffsetZMeters)
+                    NumericField(title: "Neutral Face X", value: $appModel.calibrationProfile.neutralFaceCenterX)
+                    NumericField(title: "Neutral Face Y", value: $appModel.calibrationProfile.neutralFaceCenterY)
                     NumericField(title: "Baseline Eye Distance", value: $appModel.calibrationProfile.baselineInterEyeDistance)
                 }
 

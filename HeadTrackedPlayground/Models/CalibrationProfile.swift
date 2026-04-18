@@ -6,6 +6,8 @@ struct CalibrationProfile: Codable, Equatable, Sendable {
     var webcamOffsetXMeters: Double
     var webcamOffsetYMeters: Double
     var webcamOffsetZMeters: Double
+    var neutralFaceCenterX: Double
+    var neutralFaceCenterY: Double
     var neutralHeadPose: HeadPose
     var baselineInterEyeDistance: Double
     var lateralSmoothing: Double
@@ -19,6 +21,8 @@ struct CalibrationProfile: Codable, Equatable, Sendable {
         webcamOffsetXMeters: 0,
         webcamOffsetYMeters: 0.012,
         webcamOffsetZMeters: 0,
+        neutralFaceCenterX: 0.5,
+        neutralFaceCenterY: 0.5,
         neutralHeadPose: .neutral,
         baselineInterEyeDistance: 0.13,
         lateralSmoothing: 0.2,

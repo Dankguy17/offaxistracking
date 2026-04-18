@@ -24,6 +24,9 @@
 		A00000000000000000000035 /* CameraSessionPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000034 /* CameraSessionPreview.swift */; };
 		A00000000000000000000037 /* FaceTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000038 /* FaceTrackingService.swift */; };
 		A00000000000000000000039 /* FaceTrackingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000003A /* FaceTrackingOverlayView.swift */; };
+		A0000000000000000000003B /* PoseEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000003C /* PoseEstimator.swift */; };
+		A0000000000000000000003D /* PoseSmoother.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000003E /* PoseSmoother.swift */; };
+		A0000000000000000000003F /* ProjectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000040 /* ProjectionEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +52,9 @@
 		A00000000000000000000034 /* CameraSessionPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSessionPreview.swift; sourceTree = "<group>"; };
 		A00000000000000000000038 /* FaceTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTrackingService.swift; sourceTree = "<group>"; };
 		A0000000000000000000003A /* FaceTrackingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTrackingOverlayView.swift; sourceTree = "<group>"; };
+		A0000000000000000000003C /* PoseEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseEstimator.swift; sourceTree = "<group>"; };
+		A0000000000000000000003E /* PoseSmoother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseSmoother.swift; sourceTree = "<group>"; };
+		A00000000000000000000040 /* ProjectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectionEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +160,8 @@
 		A00000000000000000000049 /* Pose */ = {
 			isa = PBXGroup;
 			children = (
+				A0000000000000000000003C /* PoseEstimator.swift */,
+				A0000000000000000000003E /* PoseSmoother.swift */,
 			);
 			path = Pose;
 			sourceTree = "<group>";
@@ -169,6 +177,7 @@
 		A0000000000000000000004B /* Projection */ = {
 			isa = PBXGroup;
 			children = (
+				A00000000000000000000040 /* ProjectionEngine.swift */,
 			);
 			path = Projection;
 			sourceTree = "<group>";
@@ -320,7 +329,10 @@
 				A00000000000000000000037 /* FaceTrackingService.swift in Sources */,
 				A00000000000000000000026 /* HeadPose.swift in Sources */,
 				A0000000000000000000002F /* InspectorPanel.swift in Sources */,
+				A0000000000000000000003B /* PoseEstimator.swift in Sources */,
+				A0000000000000000000003D /* PoseSmoother.swift in Sources */,
 				A0000000000000000000002A /* ProjectionParameters.swift in Sources */,
+				A0000000000000000000003F /* ProjectionEngine.swift in Sources */,
 				A0000000000000000000002E /* RendererPanelPlaceholderView.swift in Sources */,
 				A00000000000000000000023 /* RootView.swift in Sources */,
 				A00000000000000000000028 /* TrackedFaceState.swift in Sources */,
