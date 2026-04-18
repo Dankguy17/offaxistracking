@@ -1,0 +1,91 @@
+import SwiftUI
+
+struct InspectorPanel: View {
+    @EnvironmentObject private var appModel: AppModel
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                Text("Calibration & Debug")
+                    .font(.title2.weight(.semibold))
+
+                GroupBox("Tracking State") {
+                    LabeledContent("Mode", value: appModel.trackingStatus.mode.rawValue)
+                    LabeledContent("Confidence", value: appModel.trackingStatus.confidence.formatted(.number.precision(.fractionLength(2))))
+                    LabeledContent("Fallback", value: appModel.isUsingCoarseFallback ? "Coarse face box" : "Landmarks")
+                    LabeledContent("Age", value: "\(appModel.trackingStatus.lastUpdateAge.formatted(.number.precision(.fractionLength(3)))) s")
+                }
+
+                GroupBox("Pose") {
+                    LabeledContent("Raw X", value: metric(appModel.rawPose.x))
+                    LabeledContent("Raw Y", value: metric(appModel.rawPose.y))
+                    LabeledContent("Raw Z", value: metric(appModel.rawPose.z))
+                    Divider()
+                    LabeledContent("Smooth X", value: metric(appModel.smoothedPose.x))
+                    LabeledContent("Smooth Y", value: metric(appModel.smoothedPose.y))
+                    LabeledContent("Smooth Z", value: metric(appModel.smoothedPose.z))
+                }
+
+                GroupBox("Display Calibration") {
+                    NumericField(title: "Display Width (m)", value: $appModel.calibrationProfile.displayWidthMeters)
+                    NumericField(title: "Display Height (m)", value: $appModel.calibrationProfile.displayHeightMeters)
+                    NumericField(title: "Webcam X Offset (m)", value: $appModel.calibrationProfile.webcamOffsetXMeters)
+                    NumericField(title: "Webcam Y Offset (m)", value: $appModel.calibrationProfile.webcamOffsetYMeters)
+                    NumericField(title: "Webcam Z Offset (m)", value: $appModel.calibrationProfile.webcamOffsetZMeters)
+                    NumericField(title: "Baseline Eye Distance", value: $appModel.calibrationProfile.baselineInterEyeDistance)
+                }
+
+                GroupBox("Tracking Tuning") {
+                    NumericField(title: "Lateral Smoothing", value: $appModel.calibrationProfile.lateralSmoothing)
+                    NumericField(title: "Depth Smoothing", value: $appModel.calibrationProfile.depthSmoothing)
+                    NumericField(title: "Fallback Hold (s)", value: $appModel.calibrationProfile.fallbackHoldDuration)
+                    NumericField(title: "Reacquire Interval", value: $appModel.calibrationProfile.reacquireInterval)
+                }
+
+                GroupBox("Debug") {
+                    Toggle("Freeze Projection", isOn: $appModel.isProjectionFrozen)
+                    LabeledContent("Vision Latency", value: "\(appModel.debugMetrics.visionLatencyMS.formatted(.number.precision(.fractionLength(1)))) ms")
+                    LabeledContent("Camera FPS", value: appModel.debugMetrics.cameraFPS.formatted(.number.precision(.fractionLength(1))))
+                    LabeledContent("Render FPS", value: appModel.debugMetrics.renderFPS.formatted(.number.precision(.fractionLength(1))))
+                }
+
+                HStack {
+                    Button("Capture Neutral Pose") {
+                        appModel.captureNeutralPose()
+                    }
+
+                    Button("Reset Calibration") {
+                        appModel.resetCalibration()
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            .padding(20)
+        }
+        .frame(minWidth: 320, idealWidth: 340, maxWidth: 360)
+        .background(.ultraThinMaterial)
+        .onChange(of: appModel.calibrationProfile) { _, _ in
+            appModel.persistCalibration()
+        }
+    }
+
+    private func metric(_ value: Double) -> String {
+        value.formatted(.number.precision(.fractionLength(3)))
+    }
+}
+
+private struct NumericField: View {
+    let title: String
+    @Binding var value: Double
+
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            TextField(title, value: $value, format: .number.precision(.fractionLength(3)))
+                .multilineTextAlignment(.trailing)
+                .textFieldStyle(.roundedBorder)
+                .frame(width: 110)
+        }
+    }
+}

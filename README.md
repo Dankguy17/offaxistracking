@@ -4,7 +4,12 @@ Prototype macOS application for experimenting with webcam-based head tracking an
 
 ## Current Status
 
-Initial native Xcode scaffold with SwiftUI app structure, test target, and architecture-aligned source folders.
+Native Xcode macOS app scaffold with the first application-state layer in place:
+
+- persistent calibration profile storage in Application Support
+- shared tracking, pose, projection, and debug models
+- split SwiftUI layout for camera, renderer, and inspector panels
+- projection freeze and calibration controls wired into app state
 
 ## Requirements
 
@@ -16,6 +21,8 @@ Initial native Xcode scaffold with SwiftUI app structure, test target, and archi
 1. Open `HeadTrackedPlayground.xcodeproj` in Xcode.
 2. Build the `HeadTrackedPlayground` scheme.
 3. Run the app on macOS.
+
+The current shell launches without camera or rendering active yet, but the calibration/debug UI is live and persists its settings across launches.
 
 ## Planned Architecture
 

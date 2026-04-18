@@ -9,6 +9,16 @@
 		A00000000000000000000023 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000013 /* RootView.swift */; };
 		A00000000000000000000024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000014 /* Assets.xcassets */; };
 		A00000000000000000000025 /* HeadTrackedPlaygroundTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000015 /* HeadTrackedPlaygroundTests.swift */; };
+		A00000000000000000000026 /* HeadPose.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000016 /* HeadPose.swift */; };
+		A00000000000000000000027 /* TrackingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000017 /* TrackingStatus.swift */; };
+		A00000000000000000000028 /* TrackedFaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000018 /* TrackedFaceState.swift */; };
+		A00000000000000000000029 /* CalibrationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000019 /* CalibrationProfile.swift */; };
+		A0000000000000000000002A /* ProjectionParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001A /* ProjectionParameters.swift */; };
+		A0000000000000000000002B /* DebugMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001B /* DebugMetrics.swift */; };
+		A0000000000000000000002C /* CalibrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001C /* CalibrationManager.swift */; };
+		A0000000000000000000002D /* CameraPanelPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001D /* CameraPanelPlaceholderView.swift */; };
+		A0000000000000000000002E /* RendererPanelPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001E /* RendererPanelPlaceholderView.swift */; };
+		A0000000000000000000002F /* InspectorPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001F /* InspectorPanel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +29,16 @@
 		A00000000000000000000013 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		A00000000000000000000014 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A00000000000000000000015 /* HeadTrackedPlaygroundTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadTrackedPlaygroundTests.swift; sourceTree = "<group>"; };
+		A00000000000000000000016 /* HeadPose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadPose.swift; sourceTree = "<group>"; };
+		A00000000000000000000017 /* TrackingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingStatus.swift; sourceTree = "<group>"; };
+		A00000000000000000000018 /* TrackedFaceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedFaceState.swift; sourceTree = "<group>"; };
+		A00000000000000000000019 /* CalibrationProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationProfile.swift; sourceTree = "<group>"; };
+		A0000000000000000000001A /* ProjectionParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectionParameters.swift; sourceTree = "<group>"; };
+		A0000000000000000000001B /* DebugMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMetrics.swift; sourceTree = "<group>"; };
+		A0000000000000000000001C /* CalibrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationManager.swift; sourceTree = "<group>"; };
+		A0000000000000000000001D /* CameraPanelPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPanelPlaceholderView.swift; sourceTree = "<group>"; };
+		A0000000000000000000001E /* RendererPanelPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererPanelPlaceholderView.swift; sourceTree = "<group>"; };
+		A0000000000000000000001F /* InspectorPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorPanel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +115,9 @@
 		A00000000000000000000046 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				A0000000000000000000001D /* CameraPanelPlaceholderView.swift */,
+				A0000000000000000000001F /* InspectorPanel.swift */,
+				A0000000000000000000001E /* RendererPanelPlaceholderView.swift */,
 				A00000000000000000000013 /* RootView.swift */,
 			);
 			path = UI;
@@ -124,6 +147,7 @@
 		A0000000000000000000004A /* Calibration */ = {
 			isa = PBXGroup;
 			children = (
+				A0000000000000000000001C /* CalibrationManager.swift */,
 			);
 			path = Calibration;
 			sourceTree = "<group>";
@@ -145,6 +169,12 @@
 		A0000000000000000000004D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A00000000000000000000019 /* CalibrationProfile.swift */,
+				A0000000000000000000001B /* DebugMetrics.swift */,
+				A00000000000000000000016 /* HeadPose.swift */,
+				A0000000000000000000001A /* ProjectionParameters.swift */,
+				A00000000000000000000018 /* TrackedFaceState.swift */,
+				A00000000000000000000017 /* TrackingStatus.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -264,7 +294,17 @@
 			files = (
 				A00000000000000000000021 /* HeadTrackedPlaygroundApp.swift in Sources */,
 				A00000000000000000000022 /* AppModel.swift in Sources */,
+				A0000000000000000000002C /* CalibrationManager.swift in Sources */,
+				A00000000000000000000029 /* CalibrationProfile.swift in Sources */,
+				A0000000000000000000002D /* CameraPanelPlaceholderView.swift in Sources */,
+				A0000000000000000000002B /* DebugMetrics.swift in Sources */,
+				A00000000000000000000026 /* HeadPose.swift in Sources */,
+				A0000000000000000000002F /* InspectorPanel.swift in Sources */,
+				A0000000000000000000002A /* ProjectionParameters.swift in Sources */,
+				A0000000000000000000002E /* RendererPanelPlaceholderView.swift in Sources */,
 				A00000000000000000000023 /* RootView.swift in Sources */,
+				A00000000000000000000028 /* TrackedFaceState.swift in Sources */,
+				A00000000000000000000027 /* TrackingStatus.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +344,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
@@ -332,6 +373,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
+				ENABLE_TESTABILITY = YES;
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "HeadTrackedPlayground";
@@ -345,6 +387,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.HeadTrackedPlayground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
 			};
@@ -377,23 +420,25 @@
 		A00000000000000000000095 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
+				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.HeadTrackedPlaygroundTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
-				TEST_HOST = "";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HeadTrackedPlayground.app/Contents/MacOS/HeadTrackedPlayground";
 			};
 			name = Debug;
 		};
 		A00000000000000000000096 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -402,7 +447,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;
-				TEST_HOST = "";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HeadTrackedPlayground.app/Contents/MacOS/HeadTrackedPlayground";
 			};
 			name = Release;
 		};
