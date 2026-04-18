@@ -1,0 +1,452 @@
+// !$*UTF8*$!
+{
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A00000000000000000000021 /* HeadTrackedPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000011 /* HeadTrackedPlaygroundApp.swift */; };
+		A00000000000000000000022 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000012 /* AppModel.swift */; };
+		A00000000000000000000023 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000013 /* RootView.swift */; };
+		A00000000000000000000024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000014 /* Assets.xcassets */; };
+		A00000000000000000000025 /* HeadTrackedPlaygroundTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000015 /* HeadTrackedPlaygroundTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A00000000000000000000001 /* HeadTrackedPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeadTrackedPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00000000000000000000002 /* HeadTrackedPlaygroundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeadTrackedPlaygroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00000000000000000000011 /* HeadTrackedPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadTrackedPlaygroundApp.swift; sourceTree = "<group>"; };
+		A00000000000000000000012 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		A00000000000000000000013 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		A00000000000000000000014 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A00000000000000000000015 /* HeadTrackedPlaygroundTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadTrackedPlaygroundTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A00000000000000000000031 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000032 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A00000000000000000000041 = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000042 /* HeadTrackedPlayground */,
+				A00000000000000000000043 /* HeadTrackedPlaygroundTests */,
+				A00000000000000000000044 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A00000000000000000000042 /* HeadTrackedPlayground */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000045 /* App */,
+				A00000000000000000000046 /* UI */,
+				A00000000000000000000047 /* Camera */,
+				A00000000000000000000048 /* Tracking */,
+				A00000000000000000000049 /* Pose */,
+				A0000000000000000000004A /* Calibration */,
+				A0000000000000000000004B /* Projection */,
+				A0000000000000000000004C /* Rendering */,
+				A0000000000000000000004D /* Models */,
+				A0000000000000000000004E /* Utilities */,
+				A0000000000000000000004F /* Resources */,
+			);
+			path = HeadTrackedPlayground;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000043 /* HeadTrackedPlaygroundTests */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000015 /* HeadTrackedPlaygroundTests.swift */,
+			);
+			path = HeadTrackedPlaygroundTests;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000044 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000001 /* HeadTrackedPlayground.app */,
+				A00000000000000000000002 /* HeadTrackedPlaygroundTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000045 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000011 /* HeadTrackedPlaygroundApp.swift */,
+				A00000000000000000000012 /* AppModel.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000046 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000013 /* RootView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000047 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000048 /* Tracking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Tracking;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000049 /* Pose */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Pose;
+			sourceTree = "<group>";
+		};
+		A0000000000000000000004A /* Calibration */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Calibration;
+			sourceTree = "<group>";
+		};
+		A0000000000000000000004B /* Projection */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Projection;
+			sourceTree = "<group>";
+		};
+		A0000000000000000000004C /* Rendering */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Rendering;
+			sourceTree = "<group>";
+		};
+		A0000000000000000000004D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A0000000000000000000004E /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		A0000000000000000000004F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000014 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A00000000000000000000051 /* HeadTrackedPlayground */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00000000000000000000061 /* Build configuration list for PBXNativeTarget "HeadTrackedPlayground" */;
+			buildPhases = (
+				A00000000000000000000071 /* Sources */,
+				A00000000000000000000031 /* Frameworks */,
+				A00000000000000000000072 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HeadTrackedPlayground;
+			productName = HeadTrackedPlayground;
+			productReference = A00000000000000000000001 /* HeadTrackedPlayground.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A00000000000000000000052 /* HeadTrackedPlaygroundTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00000000000000000000062 /* Build configuration list for PBXNativeTarget "HeadTrackedPlaygroundTests" */;
+			buildPhases = (
+				A00000000000000000000073 /* Sources */,
+				A00000000000000000000032 /* Frameworks */,
+				A00000000000000000000074 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A00000000000000000000081 /* PBXTargetDependency */,
+			);
+			name = HeadTrackedPlaygroundTests;
+			productName = HeadTrackedPlaygroundTests;
+			productReference = A00000000000000000000002 /* HeadTrackedPlaygroundTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A00000000000000000000053 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					A00000000000000000000051 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					A00000000000000000000052 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = A00000000000000000000051;
+					};
+				};
+			};
+			buildConfigurationList = A00000000000000000000060 /* Build configuration list for PBXProject "HeadTrackedPlayground" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A00000000000000000000041;
+			productRefGroup = A00000000000000000000044 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A00000000000000000000051 /* HeadTrackedPlayground */,
+				A00000000000000000000052 /* HeadTrackedPlaygroundTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A00000000000000000000072 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00000000000000000000024 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000074 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A00000000000000000000071 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00000000000000000000021 /* HeadTrackedPlaygroundApp.swift in Sources */,
+				A00000000000000000000022 /* AppModel.swift in Sources */,
+				A00000000000000000000023 /* RootView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000073 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00000000000000000000025 /* HeadTrackedPlaygroundTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A00000000000000000000081 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A00000000000000000000051 /* HeadTrackedPlayground */;
+			targetProxy = A00000000000000000000082 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A00000000000000000000091 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A00000000000000000000092 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A00000000000000000000093 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "HeadTrackedPlayground";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The webcam is used to track your head position for the off-axis projection prototype.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.HeadTrackedPlayground;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A00000000000000000000094 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "HeadTrackedPlayground";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The webcam is used to track your head position for the off-axis projection prototype.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.HeadTrackedPlayground;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A00000000000000000000095 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "";
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.HeadTrackedPlaygroundTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "";
+			};
+			name = Debug;
+		};
+		A00000000000000000000096 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "";
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.HeadTrackedPlaygroundTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A00000000000000000000060 /* Build configuration list for PBXProject "HeadTrackedPlayground" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000091 /* Debug */,
+				A00000000000000000000092 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00000000000000000000061 /* Build configuration list for PBXNativeTarget "HeadTrackedPlayground" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000093 /* Debug */,
+				A00000000000000000000094 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00000000000000000000062 /* Build configuration list for PBXNativeTarget "HeadTrackedPlaygroundTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000095 /* Debug */,
+				A00000000000000000000096 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin PBXContainerItemProxy section */
+		A00000000000000000000082 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00000000000000000000053 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A00000000000000000000051;
+			remoteInfo = HeadTrackedPlayground;
+		};
+/* End PBXContainerItemProxy section */
+	};
+	rootObject = A00000000000000000000053 /* Project object */;
+}
