@@ -45,10 +45,13 @@ final class AppModel: ObservableObject {
     @Published var debugMetrics: DebugMetrics
     @Published var isProjectionFrozen: Bool
     @Published var selectedEnvironment: RenderEnvironment
+    @Published var paperCalibrationTarget: PaperCalibrationTarget
+    @Published var paperCalibrationState: PaperCalibrationState
 
     private let calibrationManager: CalibrationManager
     let cameraCaptureService: CameraCaptureService
     let faceTrackingService: FaceTrackingService
+    let paperCalibrationService: PaperCalibrationService
     let metalRenderer = MetalRenderer()
     private let poseEstimator = PoseEstimator()
     private let poseSmoother = PoseSmoother()
@@ -62,11 +65,13 @@ final class AppModel: ObservableObject {
     init(
         calibrationManager: CalibrationManager = CalibrationManager(),
         cameraCaptureService: CameraCaptureService = CameraCaptureService(),
-        faceTrackingService: FaceTrackingService = FaceTrackingService()
+        faceTrackingService: FaceTrackingService = FaceTrackingService(),
+        paperCalibrationService: PaperCalibrationService = PaperCalibrationService()
     ) {
         self.calibrationManager = calibrationManager
         self.cameraCaptureService = cameraCaptureService
         self.faceTrackingService = faceTrackingService
+        self.paperCalibrationService = paperCalibrationService
         let profile = calibrationManager.loadProfile()
         calibrationProfile = profile
         trackingStatus = .searching
@@ -76,6 +81,8 @@ final class AppModel: ObservableObject {
         debugMetrics = .zero
         isProjectionFrozen = false
         selectedEnvironment = .workspaceRoom
+        paperCalibrationTarget = .auto
+        paperCalibrationState = .idle
 
         cameraCaptureService.$averageFPS
             .receive(on: RunLoop.main)
@@ -101,6 +108,13 @@ final class AppModel: ObservableObject {
             }
             .store(in: &cancellables)
 
+        paperCalibrationService.$state
+            .receive(on: RunLoop.main)
+            .sink { [weak self] state in
+                self?.paperCalibrationState = state
+            }
+            .store(in: &cancellables)
+
         $isProjectionFrozen
             .dropFirst()
             .receive(on: RunLoop.main)
@@ -117,8 +131,13 @@ final class AppModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        cameraCaptureService.onFrame = { [weak faceTrackingService] frame in
+        paperCalibrationService.onCompleted = { [weak self] result in
+            self?.applyPaperCalibration(result)
+        }
+
+        cameraCaptureService.onFrame = { [weak faceTrackingService, weak paperCalibrationService] frame in
             faceTrackingService?.enqueue(frame)
+            paperCalibrationService?.enqueue(frame)
         }
 
         metalRenderer.onRenderFPSUpdate = { [weak self] fps in
@@ -149,6 +168,14 @@ final class AppModel: ObservableObject {
         calibrationProfile.neutralHeadPose = smoothedPose
         poseSmoother.reset(to: smoothedPose)
         persistCalibration()
+    }
+
+    func startPaperCalibration() {
+        paperCalibrationService.start(preferredTarget: paperCalibrationTarget)
+    }
+
+    func cancelPaperCalibration() {
+        paperCalibrationService.cancel()
     }
 
     func resetCalibration() {
@@ -193,5 +220,27 @@ final class AppModel: ObservableObject {
             environment: selectedEnvironment,
             isFrozen: isProjectionFrozen
         )
+    }
+
+    private func applyPaperCalibration(_ result: PaperCalibrationResult) {
+        if let observation = trackedFaceState.observation {
+            let faceCenter = poseEstimator.faceCenter(for: observation, calibration: calibrationProfile)
+            calibrationProfile.neutralFaceCenterX = faceCenter.x
+            calibrationProfile.neutralFaceCenterY = faceCenter.y
+            calibrationProfile.baselineInterEyeDistance = poseEstimator.depthSignal(
+                for: observation,
+                useCoarseFallback: trackedFaceState.isUsingCoarseFallback
+            )
+        }
+
+        var calibratedNeutralPose = smoothedPose
+        calibratedNeutralPose.z = max(result.distanceMeters - calibrationProfile.webcamOffsetZMeters, 0.05)
+        calibratedNeutralPose.confidence = max(calibratedNeutralPose.confidence, result.confidence)
+        calibratedNeutralPose.timestamp = trackedFaceState.observation?.timestamp ?? calibratedNeutralPose.timestamp
+        calibrationProfile.neutralHeadPose = calibratedNeutralPose
+        rawPose = calibratedNeutralPose
+        smoothedPose = calibratedNeutralPose
+        poseSmoother.reset(to: calibratedNeutralPose)
+        persistCalibration()
     }
 }

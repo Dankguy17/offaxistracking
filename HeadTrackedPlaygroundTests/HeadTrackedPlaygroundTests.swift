@@ -199,6 +199,45 @@ final class HeadTrackedPlaygroundTests: XCTestCase {
         XCTAssertNotEqual(shifted.projectionMatrix.columns.2.x, 0, accuracy: 0.0001)
     }
 
+    func testPaperCalibrationEstimatorDetectsA4AndComputesDistance() {
+        let estimator = PaperCalibrationEstimator()
+        let observation = estimator.estimateObservation(
+            corners: [
+                NormalizedPoint(x: 0.39, y: 0.79),
+                NormalizedPoint(x: 0.61, y: 0.79),
+                NormalizedPoint(x: 0.61, y: 0.24),
+                NormalizedPoint(x: 0.39, y: 0.24)
+            ],
+            frameSize: CGSize(width: 1280, height: 720),
+            horizontalFieldOfViewDegrees: 60,
+            preferredTarget: .auto,
+            rectangleConfidence: 0.95
+        )
+
+        XCTAssertEqual(observation?.sheet, .a4)
+        XCTAssertEqual(observation?.estimatedDistanceMeters ?? 0, 0.83, accuracy: 0.05)
+        XCTAssertGreaterThan(observation?.confidence ?? 0, 0.8)
+    }
+
+    func testPaperCalibrationEstimatorCanPreferUSLetter() {
+        let estimator = PaperCalibrationEstimator()
+        let observation = estimator.estimateObservation(
+            corners: [
+                NormalizedPoint(x: 0.39, y: 0.75),
+                NormalizedPoint(x: 0.61, y: 0.75),
+                NormalizedPoint(x: 0.61, y: 0.25),
+                NormalizedPoint(x: 0.39, y: 0.25)
+            ],
+            frameSize: CGSize(width: 1280, height: 720),
+            horizontalFieldOfViewDegrees: 60,
+            preferredTarget: .usLetter,
+            rectangleConfidence: 0.92
+        )
+
+        XCTAssertEqual(observation?.sheet, .usLetter)
+        XCTAssertEqual(observation?.estimatedDistanceMeters ?? 0, 0.86, accuracy: 0.05)
+    }
+
     func testRenderEnvironmentExposesStableSceneOptions() {
         XCTAssertEqual(RenderEnvironment.allCases.map(\.displayName), ["Workspace Room", "Target Tunnel"])
         XCTAssertEqual(RenderEnvironment.workspaceRoom.badgeTitle, "Desk + room anchors")

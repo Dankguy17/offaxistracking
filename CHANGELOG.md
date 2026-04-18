@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Added paper-based auto-calibration that detects a held-up A4 or 8.5 x 11 inch sheet with Vision rectangle detection, estimates neutral viewer distance from the sheet's known size, and applies that measurement back into the saved calibration profile.
+- Added an operator-facing auto-calibration UI, live camera overlay for the detected paper target, and regression tests for the paper-size geometry estimator.
+- Files/components affected: `Calibration/PaperCalibrationEstimator.swift`, `Calibration/PaperCalibrationService.swift`, `Models/PaperCalibration.swift`, `App/AppModel.swift`, `Camera/CameraCaptureService.swift`, `UI/InspectorPanel.swift`, `UI/CameraPanelPlaceholderView.swift`, `UI/FaceTrackingOverlayView.swift`, `HeadTrackedPlaygroundTests/HeadTrackedPlaygroundTests.swift`, `README.md`.
+- Reason: let the user anchor neutral depth with a cheap physical reference target instead of only relying on manual distance entry and relative eye-size heuristics.
 - Added a suspended demo object to the workspace room, along with a floor reference plate beneath it, so the scene now includes an obvious mid-air prop for judging head-tracked floating/parallax cues.
 - Files/components affected: `Rendering/MetalRenderer.swift`, `README.md`.
 - Reason: give the room environment a deliberately unsupported object that makes the “floating in space” effect easier to evaluate.

@@ -22,6 +22,7 @@ struct CameraPanelPlaceholderView: View {
                         .overlay {
                             FaceTrackingOverlayView(
                                 trackedFaceState: appModel.trackedFaceState,
+                                paperCalibrationState: appModel.paperCalibrationState,
                                 isMirrored: appModel.calibrationProfile.isWebcamMirrored
                             )
                                 .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
@@ -29,7 +30,7 @@ struct CameraPanelPlaceholderView: View {
                         .overlay(alignment: .topLeading) {
                             CameraStatusBanner(
                                 title: cameraCaptureService.isRunning ? "Live Camera" : "Starting Camera",
-                                subtitle: appModel.isUsingCoarseFallback ? "Coarse fallback tracking active" : "Vision tracking overlay active"
+                                subtitle: bannerSubtitle
                             )
                             .padding(14)
                         }
@@ -62,6 +63,14 @@ struct CameraPanelPlaceholderView: View {
         }
         .padding(20)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 28, style: .continuous))
+    }
+
+    private var bannerSubtitle: String {
+        if appModel.paperCalibrationState.phase != .idle {
+            return appModel.paperCalibrationState.instructionText
+        }
+
+        return appModel.isUsingCoarseFallback ? "Coarse fallback tracking active" : "Vision tracking overlay active"
     }
 
     private var cameraStateTitle: String {

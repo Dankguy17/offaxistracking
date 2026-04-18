@@ -38,6 +38,42 @@ struct InspectorPanel: View {
                     NumericField(title: "Baseline Eye Distance", value: $appModel.calibrationProfile.baselineInterEyeDistance)
                 }
 
+                GroupBox("Paper Auto-Calibration") {
+                    Picker("Paper Size", selection: $appModel.paperCalibrationTarget) {
+                        ForEach(PaperCalibrationTarget.allCases) { target in
+                            Text(target.displayName)
+                                .tag(target)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+
+                    Text("Hold the sheet near your face at your intended neutral position. Keeping both your face and the paper visible gives the best neutral depth capture.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+
+                    LabeledContent("State", value: appModel.paperCalibrationState.phase.rawValue.capitalized)
+
+                    if let observation = appModel.paperCalibrationState.observation {
+                        LabeledContent("Detected Sheet", value: observation.sheet.displayName)
+                        LabeledContent("Estimated Distance", value: metric(observation.estimatedDistanceMeters))
+                        LabeledContent("Stability", value: observation.stabilityProgress.formatted(.percent.precision(.fractionLength(0))))
+                    }
+
+                    Text(paperCalibrationInstructionText)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+
+                    if appModel.paperCalibrationState.isRunning {
+                        Button("Cancel Auto-Calibration") {
+                            appModel.cancelPaperCalibration()
+                        }
+                    } else {
+                        Button("Auto-Calibrate with Paper") {
+                            appModel.startPaperCalibration()
+                        }
+                    }
+                }
+
                 GroupBox("Tracking Tuning") {
                     NumericField(title: "Lateral Smoothing", value: $appModel.calibrationProfile.lateralSmoothing)
                     NumericField(title: "Depth Smoothing", value: $appModel.calibrationProfile.depthSmoothing)
@@ -84,6 +120,14 @@ struct InspectorPanel: View {
 
     private func metric(_ value: Double) -> String {
         value.formatted(.number.precision(.fractionLength(3)))
+    }
+
+    private var paperCalibrationInstructionText: String {
+        if appModel.paperCalibrationState.phase == .idle {
+            return appModel.paperCalibrationTarget.detectionPrompt
+        }
+
+        return appModel.paperCalibrationState.instructionText
     }
 }
 
