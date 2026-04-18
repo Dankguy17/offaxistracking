@@ -1,6 +1,9 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Added a suspended demo object to the workspace room, along with a floor reference plate beneath it, so the scene now includes an obvious mid-air prop for judging head-tracked floating/parallax cues.
+- Files/components affected: `Rendering/MetalRenderer.swift`, `README.md`.
+- Reason: give the room environment a deliberately unsupported object that makes the “floating in space” effect easier to evaluate.
 - Reworked the workspace-room renderer so the room props read as actual 3D solids instead of flat cutouts by adding face-shaded boxes and thicker geometry for the window, rug, light bar, desk accessories, and monitor assembly.
 - Expanded the workspace wireframe accents to match the deeper geometry and keep parallax cues readable as the viewer moves.
 - Files/components affected: `Rendering/MetalRenderer.swift`, `README.md`.

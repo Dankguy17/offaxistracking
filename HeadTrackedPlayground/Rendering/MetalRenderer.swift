@@ -125,6 +125,7 @@ final class MetalRenderer: NSObject {
         let accentColor = SIMD4<Float>(0.86, 0.72, 0.42, 1)
         let outlineColor = SIMD4<Float>(0.16, 0.18, 0.22, 1)
         let trimOutlineColor = SIMD4<Float>(0.22, 0.20, 0.16, 1)
+        let floatingOutlineColor = SIMD4<Float>(0.90, 0.53, 0.28, 1)
 
         let frontRoomCorners: [SIMD3<Float>] = [
             SIMD3<Float>(-1.05, -0.72, -0.24),
@@ -175,6 +176,8 @@ final class MetalRenderer: NSObject {
         appendBoxEdges(center: SIMD3<Float>(-1.42, -0.55, -2.52), size: SIMD3<Float>(0.44, 0.38, 0.44), color: outlineColor, into: &vertices)
         appendBoxEdges(center: SIMD3<Float>(-1.42, 0.08, -2.68), size: SIMD3<Float>(0.64, 0.04, 0.26), color: outlineColor, into: &vertices)
         appendBoxEdges(center: SIMD3<Float>(0, 0.92, -1.32), size: SIMD3<Float>(1.1, 0.08, 0.18), color: outlineColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(-0.24, -0.06, -1.48), size: SIMD3<Float>(0.3, 0.3, 0.3), color: floatingOutlineColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(-0.24, -0.84, -1.48), size: SIMD3<Float>(0.46, 0.02, 0.46), color: gridColor, into: &vertices)
 
         return vertices
     }
@@ -236,6 +239,9 @@ final class MetalRenderer: NSObject {
         let bookColorA = SIMD4<Float>(0.73, 0.44, 0.37, 1)
         let bookColorB = SIMD4<Float>(0.46, 0.56, 0.77, 1)
         let bookColorC = SIMD4<Float>(0.80, 0.70, 0.49, 1)
+        let floatingCoreColor = SIMD4<Float>(0.93, 0.57, 0.27, 1)
+        let floatingAccentColor = SIMD4<Float>(0.98, 0.83, 0.56, 1)
+        let floatingShadowColor = SIMD4<Float>(0.12, 0.15, 0.18, 1)
 
         var vertices: [RenderVertex] = []
 
@@ -286,6 +292,9 @@ final class MetalRenderer: NSObject {
         vertices += makeShadedBox(center: SIMD3<Float>(-1.15, 0.22, -2.68), size: SIMD3<Float>(0.14, 0.14, 0.16), color: accentColor)
 
         vertices += makeShadedBox(center: SIMD3<Float>(0, 0.92, -1.32), size: SIMD3<Float>(1.1, 0.08, 0.18), color: accentColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-0.24, -0.84, -1.48), size: SIMD3<Float>(0.46, 0.02, 0.46), color: floatingShadowColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-0.24, -0.06, -1.48), size: SIMD3<Float>(0.3, 0.3, 0.3), color: floatingCoreColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-0.24, -0.06, -1.48), size: SIMD3<Float>(0.14, 0.42, 0.14), color: floatingAccentColor)
 
         return vertices
     }
