@@ -15,7 +15,7 @@ Native Xcode macOS app scaffold with an end-to-end prototype slice in place:
 - Vision-powered single-face acquisition, box tracking, and landmark overlay
 - coarse face-box fallback when landmarks temporarily disappear
 - raw and smoothed head-pose estimation for `x`, `y`, and approximate `z`
-- MetalKit renderer with a simple room/grid scene and floating primitives
+- MetalKit renderer with a readable 3D workspace scene: room shell, floor grid, desk, monitor, shelving, and props
 - real-time off-axis projection updates driven by the smoothed head pose
 - debug freeze mode that holds the applied projection steady while tracking continues live
 
@@ -32,7 +32,7 @@ Native Xcode macOS app scaffold with an end-to-end prototype slice in place:
 
 On first launch, the app requests macOS camera permission and starts the webcam preview automatically.
 Once a face is acquired, the app tracks a single primary face between frames, overlays the tracked face box plus available landmark strokes on the preview, and keeps coarse pose tracking alive briefly if landmarks drop out.
-The Metal viewport renders a simple scene with live off-axis projection driven by the smoothed pose values from the inspector.
+The Metal viewport renders a small workspace room with live off-axis projection driven by the smoothed pose values from the inspector.
 Enable `Freeze Projection` in the inspector to hold the currently applied scene projection steady while pose values and tracking debug output continue updating.
 
 ## Notes

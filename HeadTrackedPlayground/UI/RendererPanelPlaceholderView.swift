@@ -6,7 +6,7 @@ struct RendererPanelPlaceholderView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("Projection Viewport", systemImage: "cube.transparent")
+            Label("Projection Workspace", systemImage: "cube.transparent")
                 .font(.headline)
 
             ZStack {
@@ -16,8 +16,9 @@ struct RendererPanelPlaceholderView: View {
                     Spacer()
 
                     HStack {
-                        SceneBadge(title: appModel.isProjectionFrozen ? "Projection Frozen" : "Live Off-Axis Projection")
+                        SceneBadge(title: appModel.isProjectionFrozen ? "Workspace Frozen" : "Live Workspace Projection")
                         Spacer()
+                        SceneBadge(title: "Desk + room anchors")
                         SceneBadge(title: "Viewer z \(appModel.smoothedPose.z.formatted(.number.precision(.fractionLength(2)))) m")
                     }
                     .padding(.horizontal, 16)

@@ -1,6 +1,11 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Replaced the abstract renderer primitives with a simple but recognizable workspace scene containing a room shell, floor grid, window, desk, monitor, cabinet, shelf, and plant props.
+- Added line-art edge cues around the key furniture pieces and window frame so parallax is easier to read during head motion.
+- Updated the renderer panel copy and README to describe the new workspace-oriented scene.
+- Files/components affected: `Rendering/MetalRenderer.swift`, `UI/RendererPanelPlaceholderView.swift`, `README.md`.
+- Reason: give the off-axis projection testbed a more intuitive 3D environment so movement reads as a stable room instead of an abstract box.
 - Scaffolded the native macOS SwiftUI application, Xcode project, and unit test target.
 - Created the architecture-aligned source directory layout and initial root view.
 - Added repository basics with `.gitignore` and an initial `README.md`.
