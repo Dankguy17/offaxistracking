@@ -135,4 +135,10 @@ final class HeadTrackedPlaygroundTests: XCTestCase {
         XCTAssertEqual(centered.projectionMatrix.columns.2.x, 0, accuracy: 0.0001)
         XCTAssertNotEqual(shifted.projectionMatrix.columns.2.x, 0, accuracy: 0.0001)
     }
+
+    func testRenderEnvironmentExposesStableSceneOptions() {
+        XCTAssertEqual(RenderEnvironment.allCases.map(\.displayName), ["Workspace Room", "Target Tunnel"])
+        XCTAssertEqual(RenderEnvironment.workspaceRoom.badgeTitle, "Desk + room anchors")
+        XCTAssertEqual(RenderEnvironment.targetTunnel.badgeTitle, "Billboard targets + depth frames")
+    }
 }

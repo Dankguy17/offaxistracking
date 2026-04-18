@@ -1,6 +1,40 @@
 import Combine
 import Foundation
 
+enum RenderEnvironment: String, CaseIterable, Identifiable {
+    case workspaceRoom
+    case targetTunnel
+
+    var id: Self { self }
+
+    var displayName: String {
+        switch self {
+        case .workspaceRoom:
+            "Workspace Room"
+        case .targetTunnel:
+            "Target Tunnel"
+        }
+    }
+
+    var shortLabel: String {
+        switch self {
+        case .workspaceRoom:
+            "Workspace"
+        case .targetTunnel:
+            "Tunnel"
+        }
+    }
+
+    var badgeTitle: String {
+        switch self {
+        case .workspaceRoom:
+            "Desk + room anchors"
+        case .targetTunnel:
+            "Billboard targets + depth frames"
+        }
+    }
+}
+
 @MainActor
 final class AppModel: ObservableObject {
     @Published var calibrationProfile: CalibrationProfile
@@ -10,6 +44,7 @@ final class AppModel: ObservableObject {
     @Published var smoothedPose: HeadPose
     @Published var debugMetrics: DebugMetrics
     @Published var isProjectionFrozen: Bool
+    @Published var selectedEnvironment: RenderEnvironment
 
     private let calibrationManager: CalibrationManager
     let cameraCaptureService: CameraCaptureService
@@ -40,6 +75,7 @@ final class AppModel: ObservableObject {
         smoothedPose = profile.neutralHeadPose
         debugMetrics = .zero
         isProjectionFrozen = false
+        selectedEnvironment = .workspaceRoom
 
         cameraCaptureService.$averageFPS
             .receive(on: RunLoop.main)
@@ -66,6 +102,14 @@ final class AppModel: ObservableObject {
             .store(in: &cancellables)
 
         $isProjectionFrozen
+            .dropFirst()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateRendererState()
+            }
+            .store(in: &cancellables)
+
+        $selectedEnvironment
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
@@ -146,6 +190,7 @@ final class AppModel: ObservableObject {
         metalRenderer.update(
             pose: smoothedPose,
             calibration: calibrationProfile,
+            environment: selectedEnvironment,
             isFrozen: isProjectionFrozen
         )
     }

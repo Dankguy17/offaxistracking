@@ -44,6 +44,16 @@ struct InspectorPanel: View {
                     NumericField(title: "Reacquire Interval", value: $appModel.calibrationProfile.reacquireInterval)
                 }
 
+                GroupBox("Scene") {
+                    Picker("Environment", selection: $appModel.selectedEnvironment) {
+                        ForEach(RenderEnvironment.allCases) { environment in
+                            Text(environment.displayName)
+                                .tag(environment)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+
                 GroupBox("Debug") {
                     Toggle("Freeze Projection", isOn: $appModel.isProjectionFrozen)
                     LabeledContent("Vision Latency", value: "\(appModel.debugMetrics.visionLatencyMS.formatted(.number.precision(.fractionLength(1)))) ms")

@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Added a second Metal environment, `Target Tunnel`, with wireframe depth frames and flat billboard target objects to mimic an almost-3D display volume.
+- Added an inspector scene switcher and viewport labels so the active environment can be changed live while preserving the same head-tracked off-axis projection path.
+- Files/components affected: `App/AppModel.swift`, `Rendering/MetalRenderer.swift`, `UI/InspectorPanel.swift`, `UI/RendererPanelPlaceholderView.swift`, `README.md`, `HeadTrackedPlaygroundTests/HeadTrackedPlaygroundTests.swift`.
+- Reason: make it easier to compare different spatial cues by switching between a room-scale workspace scene and a flatter “display object” scene inspired by classic head-coupled perspective demos.
 - Fixed a renderer crash in the workspace floor-grid setup by correcting the `z` span ordering and normalizing grid ranges inside the helper before iterating.
 - Files/components affected: `Rendering/MetalRenderer.swift`.
 - Reason: prevent the Metal workspace from aborting at launch when a reversed `ClosedRange` slips into grid generation.

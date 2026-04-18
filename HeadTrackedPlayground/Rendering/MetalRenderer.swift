@@ -20,6 +20,7 @@ final class MetalRenderer: NSObject {
 
     private var currentPose = HeadPose.neutral
     private var currentCalibration = CalibrationProfile.default
+    private var currentEnvironment = RenderEnvironment.workspaceRoom
     private var isProjectionFrozen = false
     private var frozenProjectionParameters: ProjectionParameters?
     private var fpsFrameCount = 0
@@ -31,7 +32,7 @@ final class MetalRenderer: NSObject {
         view.device = device
         view.colorPixelFormat = .bgra8Unorm
         view.depthStencilPixelFormat = .depth32Float
-        view.clearColor = MTLClearColor(red: 0.08, green: 0.09, blue: 0.11, alpha: 1)
+        view.clearColor = clearColor(for: currentEnvironment)
         view.preferredFramesPerSecond = 60
         view.delegate = self
 
@@ -42,9 +43,16 @@ final class MetalRenderer: NSObject {
         }
     }
 
-    func update(pose: HeadPose, calibration: CalibrationProfile, isFrozen: Bool) {
+    func update(pose: HeadPose, calibration: CalibrationProfile, environment: RenderEnvironment, isFrozen: Bool) {
         currentPose = pose
         currentCalibration = calibration
+        if currentEnvironment != environment {
+            currentEnvironment = environment
+            frozenProjectionParameters = nil
+            if let device {
+                buildScene(device: device)
+            }
+        }
 
         if self.isProjectionFrozen != isFrozen {
             if !isFrozen {
@@ -82,8 +90,8 @@ final class MetalRenderer: NSObject {
     }
 
     private func buildScene(device: MTLDevice) {
-        let lineVertices = buildLineVertices()
-        let triangleVertices = buildTriangleVertices()
+        let lineVertices = buildLineVertices(for: currentEnvironment)
+        let triangleVertices = buildTriangleVertices(for: currentEnvironment)
 
         lineVertexCount = lineVertices.count
         triangleVertexCount = triangleVertices.count
@@ -92,7 +100,25 @@ final class MetalRenderer: NSObject {
         triangleVertexBuffer = device.makeBuffer(bytes: triangleVertices, length: MemoryLayout<RenderVertex>.stride * triangleVertices.count)
     }
 
-    private func buildLineVertices() -> [RenderVertex] {
+    private func buildLineVertices(for environment: RenderEnvironment) -> [RenderVertex] {
+        switch environment {
+        case .workspaceRoom:
+            return buildWorkspaceLineVertices()
+        case .targetTunnel:
+            return buildTargetTunnelLineVertices()
+        }
+    }
+
+    private func buildTriangleVertices(for environment: RenderEnvironment) -> [RenderVertex] {
+        switch environment {
+        case .workspaceRoom:
+            return buildWorkspaceTriangleVertices()
+        case .targetTunnel:
+            return buildTargetTunnelTriangleVertices()
+        }
+    }
+
+    private func buildWorkspaceLineVertices() -> [RenderVertex] {
         var vertices: [RenderVertex] = []
         let portalColor = SIMD4<Float>(0.79, 0.80, 0.84, 1)
         let gridColor = SIMD4<Float>(0.28, 0.47, 0.57, 1)
@@ -154,7 +180,47 @@ final class MetalRenderer: NSObject {
         return vertices
     }
 
-    private func buildTriangleVertices() -> [RenderVertex] {
+    private func buildTargetTunnelLineVertices() -> [RenderVertex] {
+        var vertices: [RenderVertex] = []
+        let frameColor = SIMD4<Float>(0.22, 0.27, 0.32, 1)
+        let connectorColor = SIMD4<Float>(0.33, 0.40, 0.47, 1)
+        let nodeColor = SIMD4<Float>(0.55, 0.58, 0.63, 1)
+
+        let frameDepths: [Float] = [-0.45, -0.8, -1.15, -1.5, -1.85, -2.2, -2.55, -2.9]
+        let frameMin = SIMD2<Float>(-1.26, -0.78)
+        let frameMax = SIMD2<Float>(1.26, 0.78)
+
+        for depth in frameDepths {
+            appendRectOutline(min: frameMin, max: frameMax, z: depth, color: frameColor, into: &vertices)
+        }
+
+        for index in 0..<(frameDepths.count - 1) {
+            let nearZ = frameDepths[index]
+            let farZ = frameDepths[index + 1]
+            appendLine(from: SIMD3<Float>(frameMin.x, frameMin.y, nearZ), to: SIMD3<Float>(frameMin.x, frameMin.y, farZ), color: connectorColor, into: &vertices)
+            appendLine(from: SIMD3<Float>(frameMax.x, frameMin.y, nearZ), to: SIMD3<Float>(frameMax.x, frameMin.y, farZ), color: connectorColor, into: &vertices)
+            appendLine(from: SIMD3<Float>(frameMax.x, frameMax.y, nearZ), to: SIMD3<Float>(frameMax.x, frameMax.y, farZ), color: connectorColor, into: &vertices)
+            appendLine(from: SIMD3<Float>(frameMin.x, frameMax.y, nearZ), to: SIMD3<Float>(frameMin.x, frameMax.y, farZ), color: connectorColor, into: &vertices)
+        }
+
+        let targets = targetTunnelTargets()
+        let connections = [(0, 1), (0, 2), (2, 3), (2, 5), (5, 6), (6, 7), (4, 5), (8, 2)]
+        for connection in connections {
+            appendLine(
+                from: targets[connection.0].center,
+                to: targets[connection.1].center,
+                color: nodeColor,
+                into: &vertices
+            )
+        }
+
+        appendLine(from: SIMD3<Float>(0, 0, -0.35), to: SIMD3<Float>(0, 0, -3.05), color: connectorColor, into: &vertices)
+        appendLine(from: SIMD3<Float>(-0.72, -0.52, -0.55), to: SIMD3<Float>(0.74, -0.52, -2.45), color: connectorColor, into: &vertices)
+
+        return vertices
+    }
+
+    private func buildWorkspaceTriangleVertices() -> [RenderVertex] {
         let floorColor = SIMD4<Float>(0.40, 0.35, 0.29, 1)
         let wallColor = SIMD4<Float>(0.84, 0.81, 0.75, 1)
         let sideWallColor = SIMD4<Float>(0.79, 0.77, 0.72, 1)
@@ -223,6 +289,41 @@ final class MetalRenderer: NSObject {
         return vertices
     }
 
+    private func buildTargetTunnelTriangleVertices() -> [RenderVertex] {
+        let panelColor = SIMD4<Float>(0.05, 0.06, 0.08, 1)
+        let softPanelColor = SIMD4<Float>(0.08, 0.09, 0.12, 1)
+        let glowColor = SIMD4<Float>(0.95, 0.48, 0.62, 1)
+        let fillColor = SIMD4<Float>(0.98, 0.97, 0.99, 1)
+        let coreColor = SIMD4<Float>(0.31, 0.33, 0.40, 1)
+        let nodeColor = SIMD4<Float>(0.73, 0.74, 0.79, 1)
+
+        var vertices: [RenderVertex] = []
+        vertices += makeBox(center: SIMD3<Float>(0, 0, -1.95), size: SIMD3<Float>(2.7, 1.75, 0.02), color: panelColor)
+        vertices += makeBox(center: SIMD3<Float>(0, 0, -3.08), size: SIMD3<Float>(2.52, 1.55, 0.02), color: softPanelColor)
+
+        for target in targetTunnelTargets() {
+            if target.isHighlighted {
+                vertices += makeDiscBillboard(center: target.center, radius: target.radius * 1.1, segments: 28, color: glowColor)
+            }
+            vertices += makeRingBillboard(center: target.center, outerRadius: target.radius, innerRadius: target.radius * 0.7, segments: 28, color: glowColor)
+            vertices += makeDiscBillboard(center: target.center, radius: target.radius * 0.64, segments: 28, color: fillColor)
+            vertices += makeDiscBillboard(center: target.center, radius: target.radius * 0.16, segments: 20, color: coreColor)
+        }
+
+        let nodes: [(center: SIMD3<Float>, radius: Float)] = [
+            (SIMD3<Float>(-0.22, 0.52, -1.15), 0.05),
+            (SIMD3<Float>(0.24, 0.56, -1.42), 0.04),
+            (SIMD3<Float>(-0.12, 0.06, -1.3), 0.06),
+            (SIMD3<Float>(0.58, 0.02, -1.96), 0.05),
+            (SIMD3<Float>(-0.58, -0.42, -1.84), 0.04)
+        ]
+        for node in nodes {
+            vertices += makeDiscBillboard(center: node.center, radius: node.radius, segments: 20, color: nodeColor)
+        }
+
+        return vertices
+    }
+
     private func makeBox(center: SIMD3<Float>, size: SIMD3<Float>, color: SIMD4<Float>) -> [RenderVertex] {
         let hx = size.x * 0.5
         let hy = size.y * 0.5
@@ -253,6 +354,59 @@ final class MetalRenderer: NSObject {
                 RenderVertex(position: corners[triangle.0], color: color),
                 RenderVertex(position: corners[triangle.1], color: color),
                 RenderVertex(position: corners[triangle.2], color: color)
+            ]
+        }
+    }
+
+    private func makeDiscBillboard(
+        center: SIMD3<Float>,
+        radius: Float,
+        segments: Int,
+        color: SIMD4<Float>
+    ) -> [RenderVertex] {
+        let segmentCount = max(segments, 3)
+        let angleStep = (Float.pi * 2) / Float(segmentCount)
+
+        return (0..<segmentCount).flatMap { index in
+            let startAngle = Float(index) * angleStep
+            let endAngle = Float(index + 1) * angleStep
+            let start = center + SIMD3<Float>(cos(startAngle) * radius, sin(startAngle) * radius, 0)
+            let end = center + SIMD3<Float>(cos(endAngle) * radius, sin(endAngle) * radius, 0)
+
+            return [
+                RenderVertex(position: center, color: color),
+                RenderVertex(position: start, color: color),
+                RenderVertex(position: end, color: color)
+            ]
+        }
+    }
+
+    private func makeRingBillboard(
+        center: SIMD3<Float>,
+        outerRadius: Float,
+        innerRadius: Float,
+        segments: Int,
+        color: SIMD4<Float>
+    ) -> [RenderVertex] {
+        let segmentCount = max(segments, 3)
+        let angleStep = (Float.pi * 2) / Float(segmentCount)
+
+        return (0..<segmentCount).flatMap { index in
+            let startAngle = Float(index) * angleStep
+            let endAngle = Float(index + 1) * angleStep
+
+            let outerStart = center + SIMD3<Float>(cos(startAngle) * outerRadius, sin(startAngle) * outerRadius, 0)
+            let outerEnd = center + SIMD3<Float>(cos(endAngle) * outerRadius, sin(endAngle) * outerRadius, 0)
+            let innerStart = center + SIMD3<Float>(cos(startAngle) * innerRadius, sin(startAngle) * innerRadius, 0)
+            let innerEnd = center + SIMD3<Float>(cos(endAngle) * innerRadius, sin(endAngle) * innerRadius, 0)
+
+            return [
+                RenderVertex(position: outerStart, color: color),
+                RenderVertex(position: outerEnd, color: color),
+                RenderVertex(position: innerEnd, color: color),
+                RenderVertex(position: outerStart, color: color),
+                RenderVertex(position: innerEnd, color: color),
+                RenderVertex(position: innerStart, color: color)
             ]
         }
     }
@@ -353,6 +507,29 @@ final class MetalRenderer: NSObject {
         vertices.append(RenderVertex(position: end, color: color))
     }
 
+    private func targetTunnelTargets() -> [(center: SIMD3<Float>, radius: Float, isHighlighted: Bool)] {
+        [
+            (SIMD3<Float>(-0.42, -0.22, -1.18), 0.11, false),
+            (SIMD3<Float>(-0.16, -0.12, -1.34), 0.13, true),
+            (SIMD3<Float>(0.62, -0.1, -1.9), 0.18, true),
+            (SIMD3<Float>(-0.38, -0.42, -1.08), 0.08, false),
+            (SIMD3<Float>(0.02, -0.52, -1.56), 0.08, false),
+            (SIMD3<Float>(0.06, 0.42, -1.82), 0.07, false),
+            (SIMD3<Float>(-0.24, 0.34, -1.52), 0.06, false),
+            (SIMD3<Float>(0.52, 0.6, -2.26), 0.07, false),
+            (SIMD3<Float>(-0.08, -0.34, -0.94), 0.07, false)
+        ]
+    }
+
+    private func clearColor(for environment: RenderEnvironment) -> MTLClearColor {
+        switch environment {
+        case .workspaceRoom:
+            MTLClearColor(red: 0.08, green: 0.09, blue: 0.11, alpha: 1)
+        case .targetTunnel:
+            MTLClearColor(red: 0.01, green: 0.01, blue: 0.02, alpha: 1)
+        }
+    }
+
     private func updateFPS() {
         fpsFrameCount += 1
         let now = CACurrentMediaTime()
@@ -384,6 +561,8 @@ extension MetalRenderer: MTKViewDelegate {
         else {
             return
         }
+
+        view.clearColor = clearColor(for: currentEnvironment)
 
         let projectionParameters: ProjectionParameters
         if isProjectionFrozen {
