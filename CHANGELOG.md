@@ -13,3 +13,7 @@
 - Replaced the camera placeholder with a real preview layer so the app now shows the live built-in webcam feed when permission is granted.
 - Updated app state to own and start the camera service while surfacing live camera FPS in the debug shell.
 - Reason: validate camera capture and preview behavior before adding Vision tracking on top of the video stream.
+- Added `FaceTrackingService` with full-frame face acquisition, `VNTrackObjectRequest` box tracking between frames, and ROI-based landmark extraction.
+- Added live overlay rendering for the tracked face box plus landmark strokes directly on top of the camera preview.
+- Added coarse fallback tracking when landmarks drop out but the tracked face box remains valid, and surfaced Vision latency in the debug metrics.
+- Reason: establish the requested detection-once / track-between-frames workflow before pose estimation and projection math.

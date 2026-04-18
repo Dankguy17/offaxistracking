@@ -16,10 +16,14 @@ struct CameraPanelPlaceholderView: View {
                 if cameraCaptureService.authorizationStatus == .authorized {
                     CameraSessionPreview(session: cameraCaptureService.session)
                         .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                        .overlay {
+                            FaceTrackingOverlayView(trackedFaceState: appModel.trackedFaceState)
+                                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                        }
                         .overlay(alignment: .topLeading) {
                             CameraStatusBanner(
                                 title: cameraCaptureService.isRunning ? "Live Camera" : "Starting Camera",
-                                subtitle: "Landmark overlay arrives in the tracking step"
+                                subtitle: appModel.isUsingCoarseFallback ? "Coarse fallback tracking active" : "Vision tracking overlay active"
                             )
                             .padding(14)
                         }

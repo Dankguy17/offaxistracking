@@ -2,7 +2,7 @@ import AVFoundation
 import CoreVideo
 import Foundation
 
-final class CameraFrame {
+final class CameraFrame: @unchecked Sendable {
     let pixelBuffer: CVPixelBuffer
     let timestamp: CMTime
     let dimensions: CGSize

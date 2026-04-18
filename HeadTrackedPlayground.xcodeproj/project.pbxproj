@@ -22,6 +22,8 @@
 		A00000000000000000000030 /* CameraFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000020 /* CameraFrame.swift */; };
 		A00000000000000000000033 /* CameraCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000036 /* CameraCaptureService.swift */; };
 		A00000000000000000000035 /* CameraSessionPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000034 /* CameraSessionPreview.swift */; };
+		A00000000000000000000037 /* FaceTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000038 /* FaceTrackingService.swift */; };
+		A00000000000000000000039 /* FaceTrackingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000003A /* FaceTrackingOverlayView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +47,8 @@
 		A00000000000000000000020 /* CameraFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFrame.swift; sourceTree = "<group>"; };
 		A00000000000000000000036 /* CameraCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureService.swift; sourceTree = "<group>"; };
 		A00000000000000000000034 /* CameraSessionPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSessionPreview.swift; sourceTree = "<group>"; };
+		A00000000000000000000038 /* FaceTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTrackingService.swift; sourceTree = "<group>"; };
+		A0000000000000000000003A /* FaceTrackingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTrackingOverlayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +127,7 @@
 			children = (
 				A0000000000000000000001D /* CameraPanelPlaceholderView.swift */,
 				A00000000000000000000034 /* CameraSessionPreview.swift */,
+				A0000000000000000000003A /* FaceTrackingOverlayView.swift */,
 				A0000000000000000000001F /* InspectorPanel.swift */,
 				A0000000000000000000001E /* RendererPanelPlaceholderView.swift */,
 				A00000000000000000000013 /* RootView.swift */,
@@ -141,6 +146,7 @@
 		A00000000000000000000048 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
+				A00000000000000000000038 /* FaceTrackingService.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -310,6 +316,8 @@
 				A00000000000000000000030 /* CameraFrame.swift in Sources */,
 				A00000000000000000000035 /* CameraSessionPreview.swift in Sources */,
 				A0000000000000000000002B /* DebugMetrics.swift in Sources */,
+				A00000000000000000000039 /* FaceTrackingOverlayView.swift in Sources */,
+				A00000000000000000000037 /* FaceTrackingService.swift in Sources */,
 				A00000000000000000000026 /* HeadPose.swift in Sources */,
 				A0000000000000000000002F /* InspectorPanel.swift in Sources */,
 				A0000000000000000000002A /* ProjectionParameters.swift in Sources */,
