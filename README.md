@@ -16,7 +16,7 @@ Native Xcode macOS app scaffold with an end-to-end prototype slice in place:
 - Vision-powered single-face acquisition, box tracking, and landmark overlay
 - coarse face-box fallback when landmarks temporarily disappear
 - raw and smoothed head-pose estimation for `x`, `y`, and approximate `z`
-- MetalKit renderer with switchable environments: a readable workspace room and a target-tunnel scene with near-3D billboard objects
+- MetalKit renderer with switchable environments: a shaded 3D workspace room and a target-tunnel scene with near-3D billboard objects
 - real-time off-axis projection updates driven by the smoothed head pose
 - inspector-based environment switcher for comparing parallax cues across scenes
 - debug freeze mode that holds the applied projection steady while tracking continues live

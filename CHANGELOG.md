@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Reworked the workspace-room renderer so the room props read as actual 3D solids instead of flat cutouts by adding face-shaded boxes and thicker geometry for the window, rug, light bar, desk accessories, and monitor assembly.
+- Expanded the workspace wireframe accents to match the deeper geometry and keep parallax cues readable as the viewer moves.
+- Files/components affected: `Rendering/MetalRenderer.swift`, `README.md`.
+- Reason: improve depth perception in the workspace environment so head-coupled motion reveals solid furniture and fixtures instead of mostly front-facing planes.
 - Added a persisted `Mirror Webcam` calibration toggle and applied it consistently to the camera preview, landmark overlay, neutral-pose capture, and horizontal pose estimation path.
 - Added a backward-compatible calibration decoder so older saved profiles still load after introducing the new mirroring flag.
 - Added regression tests covering mirrored horizontal pose estimation and legacy calibration decoding.

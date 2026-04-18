@@ -124,6 +124,7 @@ final class MetalRenderer: NSObject {
         let gridColor = SIMD4<Float>(0.28, 0.47, 0.57, 1)
         let accentColor = SIMD4<Float>(0.86, 0.72, 0.42, 1)
         let outlineColor = SIMD4<Float>(0.16, 0.18, 0.22, 1)
+        let trimOutlineColor = SIMD4<Float>(0.22, 0.20, 0.16, 1)
 
         let frontRoomCorners: [SIMD3<Float>] = [
             SIMD3<Float>(-1.05, -0.72, -0.24),
@@ -161,21 +162,19 @@ final class MetalRenderer: NSObject {
             into: &vertices
         )
 
-        appendRectOutline(
-            min: SIMD2<Float>(-1.52, -0.1),
-            max: SIMD2<Float>(-0.52, 0.86),
-            z: -3.318,
-            color: accentColor,
-            into: &vertices
-        )
-        appendLine(from: SIMD3<Float>(-1.02, -0.1, -3.318), to: SIMD3<Float>(-1.02, 0.86, -3.318), color: accentColor, into: &vertices)
-        appendLine(from: SIMD3<Float>(-1.52, 0.38, -3.318), to: SIMD3<Float>(-0.52, 0.38, -3.318), color: accentColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(-1.02, 0.38, -3.3), size: SIMD3<Float>(1.18, 1.14, 0.12), color: trimOutlineColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(-1.02, 0.38, -3.25), size: SIMD3<Float>(0.94, 0.9, 0.05), color: accentColor, into: &vertices)
+        appendLine(from: SIMD3<Float>(-1.02, -0.07, -3.275), to: SIMD3<Float>(-1.02, 0.83, -3.275), color: accentColor, into: &vertices)
+        appendLine(from: SIMD3<Float>(-1.49, 0.38, -3.275), to: SIMD3<Float>(-0.55, 0.38, -3.275), color: accentColor, into: &vertices)
 
         appendBoxEdges(center: SIMD3<Float>(0.52, -0.48, -1.92), size: SIMD3<Float>(1.45, 0.08, 0.72), color: outlineColor, into: &vertices)
         appendBoxEdges(center: SIMD3<Float>(0.52, 0.0, -2.28), size: SIMD3<Float>(0.66, 0.42, 0.06), color: outlineColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(0.52, -0.44, -1.72), size: SIMD3<Float>(0.46, 0.04, 0.18), color: outlineColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(0.94, -0.43, -1.68), size: SIMD3<Float>(0.18, 0.06, 0.24), color: outlineColor, into: &vertices)
         appendBoxEdges(center: SIMD3<Float>(1.45, -0.34, -2.58), size: SIMD3<Float>(0.54, 0.94, 0.44), color: outlineColor, into: &vertices)
         appendBoxEdges(center: SIMD3<Float>(-1.42, -0.55, -2.52), size: SIMD3<Float>(0.44, 0.38, 0.44), color: outlineColor, into: &vertices)
         appendBoxEdges(center: SIMD3<Float>(-1.42, 0.08, -2.68), size: SIMD3<Float>(0.64, 0.04, 0.26), color: outlineColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(0, 0.92, -1.32), size: SIMD3<Float>(1.1, 0.08, 0.18), color: outlineColor, into: &vertices)
 
         return vertices
     }
@@ -240,51 +239,53 @@ final class MetalRenderer: NSObject {
 
         var vertices: [RenderVertex] = []
 
-        vertices += makeBox(center: SIMD3<Float>(0, -0.99, -1.92), size: SIMD3<Float>(4.0, 0.04, 3.1), color: floorColor)
-        vertices += makeBox(center: SIMD3<Float>(0, 1.18, -1.92), size: SIMD3<Float>(4.0, 0.04, 3.1), color: ceilingColor)
-        vertices += makeBox(center: SIMD3<Float>(0, 0.2, -3.35), size: SIMD3<Float>(4.0, 2.4, 0.05), color: wallColor)
-        vertices += makeBox(center: SIMD3<Float>(-2.0, 0.2, -1.92), size: SIMD3<Float>(0.05, 2.4, 3.1), color: sideWallColor)
-        vertices += makeBox(center: SIMD3<Float>(2.0, 0.2, -1.92), size: SIMD3<Float>(0.05, 2.4, 3.1), color: sideWallColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, -0.99, -1.92), size: SIMD3<Float>(4.0, 0.04, 3.1), color: floorColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, 1.18, -1.92), size: SIMD3<Float>(4.0, 0.04, 3.1), color: ceilingColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, 0.2, -3.35), size: SIMD3<Float>(4.0, 2.4, 0.05), color: wallColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-2.0, 0.2, -1.92), size: SIMD3<Float>(0.05, 2.4, 3.1), color: sideWallColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(2.0, 0.2, -1.92), size: SIMD3<Float>(0.05, 2.4, 3.1), color: sideWallColor)
 
-        vertices += makeBox(center: SIMD3<Float>(0.1, -0.965, -2.02), size: SIMD3<Float>(2.25, 0.02, 1.32), color: rugColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0.1, -0.955, -2.02), size: SIMD3<Float>(2.25, 0.04, 1.32), color: rugColor)
 
-        vertices += makeBox(center: SIMD3<Float>(-1.02, 0.38, -3.34), size: SIMD3<Float>(0.96, 0.92, 0.02), color: screenColor)
-        vertices += makeBox(center: SIMD3<Float>(-1.02, 0.38, -3.305), size: SIMD3<Float>(1.08, 1.04, 0.03), color: accentColor)
-        vertices += makeBox(center: SIMD3<Float>(-1.02, 0.38, -3.292), size: SIMD3<Float>(0.86, 0.82, 0.03), color: screenColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.02, 0.38, -3.3), size: SIMD3<Float>(1.18, 1.14, 0.12), color: accentColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.02, 0.38, -3.25), size: SIMD3<Float>(0.94, 0.9, 0.05), color: wallColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.02, 0.38, -3.225), size: SIMD3<Float>(0.82, 0.78, 0.03), color: screenColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.02, -0.2, -3.2), size: SIMD3<Float>(0.88, 0.05, 0.22), color: accentColor)
 
-        vertices += makeBox(center: SIMD3<Float>(0.52, -0.48, -1.92), size: SIMD3<Float>(1.45, 0.08, 0.72), color: deskColor)
-        vertices += makeBox(center: SIMD3<Float>(-0.08, -0.82, -1.66), size: SIMD3<Float>(0.08, 0.6, 0.08), color: deskColor)
-        vertices += makeBox(center: SIMD3<Float>(1.12, -0.82, -1.66), size: SIMD3<Float>(0.08, 0.6, 0.08), color: deskColor)
-        vertices += makeBox(center: SIMD3<Float>(-0.08, -0.82, -2.18), size: SIMD3<Float>(0.08, 0.6, 0.08), color: deskColor)
-        vertices += makeBox(center: SIMD3<Float>(1.12, -0.82, -2.18), size: SIMD3<Float>(0.08, 0.6, 0.08), color: deskColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0.52, -0.48, -1.92), size: SIMD3<Float>(1.45, 0.08, 0.72), color: deskColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-0.08, -0.82, -1.66), size: SIMD3<Float>(0.08, 0.6, 0.08), color: deskColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(1.12, -0.82, -1.66), size: SIMD3<Float>(0.08, 0.6, 0.08), color: deskColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-0.08, -0.82, -2.18), size: SIMD3<Float>(0.08, 0.6, 0.08), color: deskColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(1.12, -0.82, -2.18), size: SIMD3<Float>(0.08, 0.6, 0.08), color: deskColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0.48, -0.7, -1.92), size: SIMD3<Float>(0.92, 0.06, 0.18), color: deskColor)
 
-        vertices += makeBox(center: SIMD3<Float>(0.52, 0.0, -2.28), size: SIMD3<Float>(0.66, 0.42, 0.06), color: monitorColor)
-        vertices += makeBox(center: SIMD3<Float>(0.52, 0.0, -2.245), size: SIMD3<Float>(0.56, 0.32, 0.02), color: screenColor)
-        vertices += makeBox(center: SIMD3<Float>(0.52, -0.25, -2.24), size: SIMD3<Float>(0.05, 0.22, 0.05), color: metalColor)
-        vertices += makeBox(center: SIMD3<Float>(0.52, -0.37, -2.15), size: SIMD3<Float>(0.22, 0.02, 0.12), color: metalColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0.52, 0.0, -2.28), size: SIMD3<Float>(0.66, 0.42, 0.08), color: monitorColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0.52, 0.0, -2.22), size: SIMD3<Float>(0.54, 0.3, 0.02), color: screenColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0.52, -0.25, -2.24), size: SIMD3<Float>(0.05, 0.22, 0.07), color: metalColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0.52, -0.37, -2.15), size: SIMD3<Float>(0.22, 0.03, 0.16), color: metalColor)
 
-        vertices += makeBox(center: SIMD3<Float>(0.38, -0.41, -1.72), size: SIMD3<Float>(0.42, 0.02, 0.16), color: monitorColor)
-        vertices += makeBox(center: SIMD3<Float>(0.84, -0.41, -1.72), size: SIMD3<Float>(0.14, 0.02, 0.2), color: accentColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0.42, -0.44, -1.72), size: SIMD3<Float>(0.46, 0.04, 0.18), color: monitorColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0.94, -0.43, -1.68), size: SIMD3<Float>(0.18, 0.06, 0.24), color: accentColor)
 
-        vertices += makeBox(center: SIMD3<Float>(1.45, -0.34, -2.58), size: SIMD3<Float>(0.54, 0.94, 0.44), color: cabinetColor)
-        vertices += makeBox(center: SIMD3<Float>(1.45, -0.02, -2.58), size: SIMD3<Float>(0.48, 0.02, 0.4), color: metalColor)
-        vertices += makeBox(center: SIMD3<Float>(1.45, 0.3, -2.58), size: SIMD3<Float>(0.48, 0.02, 0.4), color: metalColor)
-        vertices += makeBox(center: SIMD3<Float>(1.32, -0.66, -2.38), size: SIMD3<Float>(0.14, 0.18, 0.12), color: bookColorA)
-        vertices += makeBox(center: SIMD3<Float>(1.47, -0.63, -2.38), size: SIMD3<Float>(0.1, 0.24, 0.12), color: bookColorB)
-        vertices += makeBox(center: SIMD3<Float>(1.61, -0.64, -2.38), size: SIMD3<Float>(0.12, 0.22, 0.12), color: bookColorC)
+        vertices += makeShadedBox(center: SIMD3<Float>(1.45, -0.34, -2.58), size: SIMD3<Float>(0.54, 0.94, 0.44), color: cabinetColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(1.45, -0.02, -2.58), size: SIMD3<Float>(0.48, 0.02, 0.4), color: metalColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(1.45, 0.3, -2.58), size: SIMD3<Float>(0.48, 0.02, 0.4), color: metalColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(1.32, -0.66, -2.38), size: SIMD3<Float>(0.14, 0.18, 0.12), color: bookColorA)
+        vertices += makeShadedBox(center: SIMD3<Float>(1.47, -0.63, -2.38), size: SIMD3<Float>(0.1, 0.24, 0.12), color: bookColorB)
+        vertices += makeShadedBox(center: SIMD3<Float>(1.61, -0.64, -2.38), size: SIMD3<Float>(0.12, 0.22, 0.12), color: bookColorC)
 
-        vertices += makeBox(center: SIMD3<Float>(-1.42, -0.55, -2.52), size: SIMD3<Float>(0.44, 0.38, 0.44), color: plantPotColor)
-        vertices += makeBox(center: SIMD3<Float>(-1.54, -0.18, -2.47), size: SIMD3<Float>(0.12, 0.38, 0.12), color: plantLeafColor)
-        vertices += makeBox(center: SIMD3<Float>(-1.42, -0.08, -2.62), size: SIMD3<Float>(0.18, 0.48, 0.12), color: plantLeafColor)
-        vertices += makeBox(center: SIMD3<Float>(-1.28, -0.16, -2.48), size: SIMD3<Float>(0.12, 0.34, 0.12), color: plantLeafColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.42, -0.55, -2.52), size: SIMD3<Float>(0.44, 0.38, 0.44), color: plantPotColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.54, -0.18, -2.47), size: SIMD3<Float>(0.16, 0.38, 0.16), color: plantLeafColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.42, -0.08, -2.62), size: SIMD3<Float>(0.2, 0.48, 0.16), color: plantLeafColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.28, -0.16, -2.48), size: SIMD3<Float>(0.16, 0.34, 0.16), color: plantLeafColor)
 
-        vertices += makeBox(center: SIMD3<Float>(-1.42, 0.08, -2.68), size: SIMD3<Float>(0.64, 0.04, 0.26), color: deskColor)
-        vertices += makeBox(center: SIMD3<Float>(-1.62, 0.28, -2.68), size: SIMD3<Float>(0.1, 0.36, 0.16), color: bookColorA)
-        vertices += makeBox(center: SIMD3<Float>(-1.47, 0.25, -2.68), size: SIMD3<Float>(0.12, 0.3, 0.16), color: bookColorB)
-        vertices += makeBox(center: SIMD3<Float>(-1.32, 0.24, -2.68), size: SIMD3<Float>(0.1, 0.28, 0.16), color: bookColorC)
-        vertices += makeBox(center: SIMD3<Float>(-1.15, 0.22, -2.68), size: SIMD3<Float>(0.14, 0.14, 0.16), color: accentColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.42, 0.08, -2.68), size: SIMD3<Float>(0.64, 0.04, 0.26), color: deskColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.62, 0.28, -2.68), size: SIMD3<Float>(0.1, 0.36, 0.16), color: bookColorA)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.47, 0.25, -2.68), size: SIMD3<Float>(0.12, 0.3, 0.16), color: bookColorB)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.32, 0.24, -2.68), size: SIMD3<Float>(0.1, 0.28, 0.16), color: bookColorC)
+        vertices += makeShadedBox(center: SIMD3<Float>(-1.15, 0.22, -2.68), size: SIMD3<Float>(0.14, 0.14, 0.16), color: accentColor)
 
-        vertices += makeBox(center: SIMD3<Float>(0, 0.92, -1.32), size: SIMD3<Float>(1.1, 0.04, 0.12), color: accentColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, 0.92, -1.32), size: SIMD3<Float>(1.1, 0.08, 0.18), color: accentColor)
 
         return vertices
     }
@@ -356,6 +357,53 @@ final class MetalRenderer: NSObject {
                 RenderVertex(position: corners[triangle.2], color: color)
             ]
         }
+    }
+
+    private func makeShadedBox(center: SIMD3<Float>, size: SIMD3<Float>, color: SIMD4<Float>) -> [RenderVertex] {
+        let hx = size.x * 0.5
+        let hy = size.y * 0.5
+        let hz = size.z * 0.5
+
+        let corners: [SIMD3<Float>] = [
+            center + SIMD3<Float>(-hx, -hy, hz),
+            center + SIMD3<Float>(hx, -hy, hz),
+            center + SIMD3<Float>(hx, hy, hz),
+            center + SIMD3<Float>(-hx, hy, hz),
+            center + SIMD3<Float>(-hx, -hy, -hz),
+            center + SIMD3<Float>(hx, -hy, -hz),
+            center + SIMD3<Float>(hx, hy, -hz),
+            center + SIMD3<Float>(-hx, hy, -hz),
+        ]
+
+        let faces: [(indices: [Int], intensity: Float)] = [
+            ([0, 1, 2, 3], 1.03), // front
+            ([1, 5, 6, 2], 0.82), // right
+            ([5, 4, 7, 6], 0.7),  // back
+            ([4, 0, 3, 7], 0.88), // left
+            ([3, 2, 6, 7], 1.12), // top
+            ([4, 5, 1, 0], 0.62), // bottom
+        ]
+
+        return faces.flatMap { face in
+            let faceColor = tinted(color, intensity: face.intensity)
+            return [
+                RenderVertex(position: corners[face.indices[0]], color: faceColor),
+                RenderVertex(position: corners[face.indices[1]], color: faceColor),
+                RenderVertex(position: corners[face.indices[2]], color: faceColor),
+                RenderVertex(position: corners[face.indices[0]], color: faceColor),
+                RenderVertex(position: corners[face.indices[2]], color: faceColor),
+                RenderVertex(position: corners[face.indices[3]], color: faceColor)
+            ]
+        }
+    }
+
+    private func tinted(_ color: SIMD4<Float>, intensity: Float) -> SIMD4<Float> {
+        SIMD4<Float>(
+            min(max(color.x * intensity, 0), 1),
+            min(max(color.y * intensity, 0), 1),
+            min(max(color.z * intensity, 0), 1),
+            color.w
+        )
     }
 
     private func makeDiscBillboard(
