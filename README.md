@@ -4,7 +4,7 @@ Prototype macOS application for experimenting with webcam-based head tracking an
 
 ## Current Status
 
-Native Xcode macOS app scaffold with the first application-state layer in place:
+Native Xcode macOS app scaffold with an end-to-end prototype slice in place:
 
 - persistent calibration profile storage in Application Support
 - shared tracking, pose, projection, and debug models
@@ -15,7 +15,9 @@ Native Xcode macOS app scaffold with the first application-state layer in place:
 - Vision-powered single-face acquisition, box tracking, and landmark overlay
 - coarse face-box fallback when landmarks temporarily disappear
 - raw and smoothed head-pose estimation for `x`, `y`, and approximate `z`
-- off-axis projection math utilities ready to drive the Metal renderer
+- MetalKit renderer with a simple room/grid scene and floating primitives
+- real-time off-axis projection updates driven by the smoothed head pose
+- debug freeze mode that holds the applied projection steady while tracking continues live
 
 ## Requirements
 
@@ -28,10 +30,15 @@ Native Xcode macOS app scaffold with the first application-state layer in place:
 2. Build the `HeadTrackedPlayground` scheme.
 3. Run the app on macOS.
 
-The current shell launches without camera or rendering active yet, but the calibration/debug UI is live and persists its settings across launches.
-The camera preview now starts on launch and requests macOS camera permission if needed.
-Once a face is acquired, the app tracks a single primary face between frames and overlays the tracked face box plus available landmark strokes on the preview.
-The inspector’s pose values now respond to tracked head movement and use calibration values for neutral center, smoothing, and approximate depth.
+On first launch, the app requests macOS camera permission and starts the webcam preview automatically.
+Once a face is acquired, the app tracks a single primary face between frames, overlays the tracked face box plus available landmark strokes on the preview, and keeps coarse pose tracking alive briefly if landmarks drop out.
+The Metal viewport renders a simple scene with live off-axis projection driven by the smoothed pose values from the inspector.
+Enable `Freeze Projection` in the inspector to hold the currently applied scene projection steady while pose values and tracking debug output continue updating.
+
+## Notes
+
+- The renderer uses Metal / MetalKit directly and does not depend on SceneKit.
+- Shader source is compiled at runtime from an embedded Metal source string instead of a checked-in `.metal` build phase input. This keeps command-line builds working on systems where Xcode's optional Metal Toolchain component is not installed.
 
 ## Planned Architecture
 

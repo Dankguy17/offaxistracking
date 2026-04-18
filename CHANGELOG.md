@@ -21,3 +21,8 @@
 - Extended calibration to capture neutral face center and baseline depth signal, then wired the neutral-capture action to store those values from the current observation.
 - Added unit coverage for pose estimation, smoothing hold behavior, and asymmetric off-axis frustum generation.
 - Reason: convert tracking output into stable viewer-position estimates before attaching it to a Metal scene.
+- Added a MetalKit renderer with a simple room wireframe, rear-wall grid, and floating solid primitives driven by the off-axis projection engine.
+- Wired the renderer into app state so smoothed pose, calibration changes, render FPS, and the debug projection-freeze toggle all update the live viewport.
+- Switched shader compilation to an embedded runtime Metal source string so command-line builds remain valid even when the optional Xcode Metal Toolchain component is unavailable.
+- Files/components affected: `Rendering/MetalRenderer.swift`, `Rendering/MetalViewport.swift`, `App/AppModel.swift`, `UI/RendererPanelPlaceholderView.swift`, `UI/RootView.swift`, `README.md`, `HeadTrackedPlayground.xcodeproj`.
+- Reason: complete the MVP's rendering vertical slice with true off-axis projection and a calibration-friendly freeze mode while preserving buildability in the local environment.

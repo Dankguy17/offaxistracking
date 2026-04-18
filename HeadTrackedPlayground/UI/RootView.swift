@@ -10,13 +10,13 @@ struct RootView: View {
                     Text("Head-Tracked 3D Window Playground")
                         .font(.system(size: 30, weight: .bold, design: .rounded))
 
-                    Text("Prototype shell with persistent calibration state, debug controls, and placeholders for the camera and Metal pipelines.")
+                    Text("Live webcam tracking, calibrated pose estimation, and a Metal off-axis viewport for evaluating head-tracked parallax.")
                         .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 CameraPanelPlaceholderView(cameraCaptureService: appModel.cameraCaptureService)
-                RendererPanelPlaceholderView()
+                RendererPanelPlaceholderView(metalRenderer: appModel.metalRenderer)
             }
             .padding(24)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)

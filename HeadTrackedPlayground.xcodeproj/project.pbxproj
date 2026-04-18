@@ -27,6 +27,8 @@
 		A0000000000000000000003B /* PoseEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000003C /* PoseEstimator.swift */; };
 		A0000000000000000000003D /* PoseSmoother.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000003E /* PoseSmoother.swift */; };
 		A0000000000000000000003F /* ProjectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000040 /* ProjectionEngine.swift */; };
+		A00000000000000000000083 /* MetalRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000084 /* MetalRenderer.swift */; };
+		A00000000000000000000085 /* MetalViewport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000086 /* MetalViewport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +57,8 @@
 		A0000000000000000000003C /* PoseEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseEstimator.swift; sourceTree = "<group>"; };
 		A0000000000000000000003E /* PoseSmoother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseSmoother.swift; sourceTree = "<group>"; };
 		A00000000000000000000040 /* ProjectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectionEngine.swift; sourceTree = "<group>"; };
+		A00000000000000000000084 /* MetalRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRenderer.swift; sourceTree = "<group>"; };
+		A00000000000000000000086 /* MetalViewport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalViewport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +189,8 @@
 		A0000000000000000000004C /* Rendering */ = {
 			isa = PBXGroup;
 			children = (
+				A00000000000000000000084 /* MetalRenderer.swift */,
+				A00000000000000000000086 /* MetalViewport.swift */,
 			);
 			path = Rendering;
 			sourceTree = "<group>";
@@ -329,6 +335,8 @@
 				A00000000000000000000037 /* FaceTrackingService.swift in Sources */,
 				A00000000000000000000026 /* HeadPose.swift in Sources */,
 				A0000000000000000000002F /* InspectorPanel.swift in Sources */,
+				A00000000000000000000083 /* MetalRenderer.swift in Sources */,
+				A00000000000000000000085 /* MetalViewport.swift in Sources */,
 				A0000000000000000000003B /* PoseEstimator.swift in Sources */,
 				A0000000000000000000003D /* PoseSmoother.swift in Sources */,
 				A0000000000000000000002A /* ProjectionParameters.swift in Sources */,

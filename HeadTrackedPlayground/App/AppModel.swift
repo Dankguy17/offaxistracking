@@ -14,6 +14,7 @@ final class AppModel: ObservableObject {
     private let calibrationManager: CalibrationManager
     let cameraCaptureService: CameraCaptureService
     let faceTrackingService: FaceTrackingService
+    let metalRenderer = MetalRenderer()
     private let poseEstimator = PoseEstimator()
     private let poseSmoother = PoseSmoother()
     private var cancellables = Set<AnyCancellable>()
@@ -64,8 +65,22 @@ final class AppModel: ObservableObject {
             }
             .store(in: &cancellables)
 
+        $isProjectionFrozen
+            .dropFirst()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateRendererState()
+            }
+            .store(in: &cancellables)
+
         cameraCaptureService.onFrame = { [weak faceTrackingService] frame in
             faceTrackingService?.enqueue(frame)
+        }
+
+        metalRenderer.onRenderFPSUpdate = { [weak self] fps in
+            DispatchQueue.main.async {
+                self?.debugMetrics.renderFPS = fps
+            }
         }
     }
 
@@ -74,6 +89,7 @@ final class AppModel: ObservableObject {
         hasStartedServices = true
         faceTrackingService.reacquireInterval = calibrationProfile.reacquireInterval
         cameraCaptureService.start()
+        updateRendererState()
     }
 
     func captureNeutralPose() {
@@ -122,6 +138,15 @@ final class AppModel: ObservableObject {
             trackingStatus: trackedFaceState.status,
             calibration: calibrationProfile,
             now: now
+        )
+        updateRendererState()
+    }
+
+    private func updateRendererState() {
+        metalRenderer.update(
+            pose: smoothedPose,
+            calibration: calibrationProfile,
+            isFrozen: isProjectionFrozen
         )
     }
 }
