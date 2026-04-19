@@ -263,19 +263,18 @@ final class MetalRenderer: NSObject {
         let frameColor = SIMD4<Float>(0.50, 0.43, 0.29, 1)
         let railColor = SIMD4<Float>(0.28, 0.25, 0.21, 1)
         let aisleColor = SIMD4<Float>(0.86, 0.69, 0.33, 1)
-        let seatOutlineColor = SIMD4<Float>(0.20, 0.09, 0.08, 1)
 
         appendRectOutline(
-            min: SIMD2<Float>(-1.52, -0.84),
-            max: SIMD2<Float>(1.52, 0.92),
+            min: SIMD2<Float>(-2.08, -1.12),
+            max: SIMD2<Float>(2.08, 1.18),
             z: -3.74,
             color: frameColor,
             into: &vertices
         )
 
         appendRectOutline(
-            min: SIMD2<Float>(-1.30, -0.68),
-            max: SIMD2<Float>(1.30, 0.78),
+            min: SIMD2<Float>(-1.82, -0.94),
+            max: SIMD2<Float>(1.82, 1.00),
             z: -3.68,
             color: aisleColor,
             into: &vertices
@@ -284,17 +283,6 @@ final class MetalRenderer: NSObject {
         appendLine(from: SIMD3<Float>(-2.05, -0.94, -0.34), to: SIMD3<Float>(2.05, -0.94, -0.34), color: railColor, into: &vertices)
         appendLine(from: SIMD3<Float>(-1.84, -0.44, -1.22), to: SIMD3<Float>(1.84, -0.44, -1.22), color: railColor, into: &vertices)
         appendLine(from: SIMD3<Float>(-1.62, 0.02, -2.08), to: SIMD3<Float>(1.62, 0.02, -2.08), color: railColor, into: &vertices)
-
-        for row in theaterSeatRows() {
-            for seatCenter in row.seatCenters {
-                appendBoxEdges(
-                    center: seatCenter,
-                    size: SIMD3<Float>(0.34, 0.28, 0.34),
-                    color: seatOutlineColor,
-                    into: &vertices
-                )
-            }
-        }
 
         let aisleMarkers: [SIMD3<Float>] = [
             SIMD3<Float>(0, -0.92, -0.74),
@@ -430,8 +418,6 @@ final class MetalRenderer: NSObject {
         let curtainColor = SIMD4<Float>(0.57, 0.10, 0.12, 1)
         let screenBackingColor = SIMD4<Float>(0.05, 0.05, 0.06, 1)
         let screenGlowColor = SIMD4<Float>(0.73, 0.80, 0.86, 1)
-        let seatColor = SIMD4<Float>(0.48, 0.11, 0.11, 1)
-        let seatShadowColor = SIMD4<Float>(0.16, 0.04, 0.04, 1)
         let aisleLightColor = SIMD4<Float>(0.89, 0.70, 0.35, 1)
 
         var vertices: [RenderVertex] = []
@@ -445,20 +431,13 @@ final class MetalRenderer: NSObject {
         vertices += makeShadedBox(center: SIMD3<Float>(0, -0.98, -1.98), size: SIMD3<Float>(0.62, 0.02, 2.9), color: carpetColor)
         vertices += makeShadedBox(center: SIMD3<Float>(0, -0.98, -3.44), size: SIMD3<Float>(3.5, 0.02, 0.68), color: stageColor)
 
-        vertices += makeShadedBox(center: SIMD3<Float>(0, 0.05, -3.82), size: SIMD3<Float>(3.18, 1.96, 0.05), color: trimColor)
-        vertices += makeShadedBox(center: SIMD3<Float>(0, 0.05, -3.77), size: SIMD3<Float>(2.74, 1.60, 0.03), color: screenBackingColor)
-        vertices += makeShadedBox(center: SIMD3<Float>(0, 0.05, -3.755), size: SIMD3<Float>(2.48, 1.40, 0.01), color: screenGlowColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, 0.03, -3.82), size: SIMD3<Float>(4.22, 2.52, 0.05), color: trimColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, 0.03, -3.77), size: SIMD3<Float>(3.78, 2.14, 0.03), color: screenBackingColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, 0.03, -3.755), size: SIMD3<Float>(3.46, 1.96, 0.01), color: screenGlowColor)
 
         vertices += makeShadedBox(center: SIMD3<Float>(-1.66, 0.08, -3.78), size: SIMD3<Float>(0.34, 1.88, 0.08), color: curtainColor)
         vertices += makeShadedBox(center: SIMD3<Float>(1.66, 0.08, -3.78), size: SIMD3<Float>(0.34, 1.88, 0.08), color: curtainColor)
         vertices += makeShadedBox(center: SIMD3<Float>(0, 1.03, -3.8), size: SIMD3<Float>(3.7, 0.22, 0.12), color: curtainColor)
-
-        for row in theaterSeatRows() {
-            for seatCenter in row.seatCenters {
-                vertices += makeShadedBox(center: seatCenter, size: SIMD3<Float>(0.34, 0.18, 0.34), color: seatColor)
-                vertices += makeShadedBox(center: seatCenter + SIMD3<Float>(0, 0.18, -0.08), size: SIMD3<Float>(0.34, 0.24, 0.12), color: seatShadowColor)
-            }
-        }
 
         let aisleLights: [SIMD3<Float>] = [
             SIMD3<Float>(0, -0.97, -0.82),
@@ -491,9 +470,9 @@ final class MetalRenderer: NSObject {
             )
         case .theaterScreen:
             return makeTexturedBillboard(
-                center: SIMD3<Float>(0, 0.05, -3.748),
-                maxWidth: 2.48,
-                maxHeight: 1.40,
+                center: SIMD3<Float>(0, 0.03, -3.748),
+                maxWidth: 3.46,
+                maxHeight: 1.96,
                 aspectRatio: aspectRatio
             )
         }
@@ -779,19 +758,6 @@ final class MetalRenderer: NSObject {
             (SIMD3<Float>(0.52, 0.6, -2.26), 0.07, false),
             (SIMD3<Float>(-0.08, -0.34, -0.94), 0.07, false)
         ]
-    }
-
-    private func theaterSeatRows() -> [(z: Float, seatCenters: [SIMD3<Float>])] {
-        let rowDepths: [Float] = [-0.72, -1.56, -2.40]
-        let rowHeights: [Float] = [-0.86, -0.40, 0.04]
-        let seatColumns: [Float] = [-1.44, -1.02, -0.60, 0.60, 1.02, 1.44]
-
-        return zip(rowDepths, rowHeights).map { depth, height in
-            let centers = seatColumns.map { column in
-                SIMD3<Float>(column, height, depth)
-            }
-            return (depth, centers)
-        }
     }
 
     private func clearColor(for environment: RenderEnvironment) -> MTLClearColor {

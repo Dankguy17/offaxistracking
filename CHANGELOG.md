@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Re-tuned the `Theater Screen` environment so the projection surface is physically larger, which makes close viewing crop more of the image while backing away reveals more of the fixed screen as expected under off-axis projection.
+- Removed the decorative theater seat rows to keep the scene focused on the screen silhouette and stage cues.
+- Files/components affected: `Rendering/MetalRenderer.swift`, `README.md`.
+- Reason: align the theater environment with the expected head-coupled perspective behavior and reduce foreground clutter that distracts from the screen test.
 - Added a dedicated `Theater Screen` Metal environment with auditorium walls, seating rows, aisle markers, and a large projection surface tuned for evaluating a flat image as a cinema-style screen in depth.
 - Extended the environment selector metadata and tests so the new auditorium scene appears alongside the workspace and tunnel modes.
 - Files/components affected: `App/AppModel.swift`, `Rendering/MetalRenderer.swift`, `HeadTrackedPlaygroundTests/HeadTrackedPlaygroundTests.swift`, `README.md`.

@@ -17,7 +17,7 @@ Native Xcode macOS app scaffold with an end-to-end prototype slice in place:
 - Vision-powered single-face acquisition, box tracking, and landmark overlay
 - coarse face-box fallback when landmarks temporarily disappear
 - raw and smoothed head-pose estimation for `x`, `y`, and approximate `z`
-- MetalKit renderer with switchable environments: a shaded 3D workspace room, a target-tunnel scene with near-3D billboard objects, and a theater-screen auditorium view for judging flat-image stability
+- MetalKit renderer with switchable environments: a shaded 3D workspace room, a target-tunnel scene with near-3D billboard objects, and a theater-screen auditorium view with an oversized screen for judging flat-image stability as distance changes
 - optional custom screen artwork loaded from disk and projected onto a theater-style rear screen inside either Metal environment
 - workspace room now includes a suspended demo object above the floor so floating depth cues are easy to judge during head motion
 - real-time off-axis projection updates driven by the smoothed head pose
