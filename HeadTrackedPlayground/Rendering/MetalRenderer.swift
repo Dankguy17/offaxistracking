@@ -133,6 +133,8 @@ final class MetalRenderer: NSObject {
             return buildTargetTunnelLineVertices()
         case .theaterScreen:
             return buildTheaterScreenLineVertices()
+        case .windowLandscape:
+            return buildWindowLandscapeLineVertices()
         }
     }
 
@@ -145,6 +147,8 @@ final class MetalRenderer: NSObject {
             vertices = buildTargetTunnelTriangleVertices()
         case .theaterScreen:
             vertices = buildTheaterScreenTriangleVertices()
+        case .windowLandscape:
+            vertices = buildWindowLandscapeTriangleVertices()
         }
 
         if artworkTexture != nil {
@@ -291,6 +295,34 @@ final class MetalRenderer: NSObject {
         ]
         for marker in aisleMarkers {
             appendBoxEdges(center: marker, size: SIMD3<Float>(0.24, 0.02, 0.16), color: aisleColor, into: &vertices)
+        }
+
+        return vertices
+    }
+
+    private func buildWindowLandscapeLineVertices() -> [RenderVertex] {
+        var vertices: [RenderVertex] = []
+        let frameOutlineColor = SIMD4<Float>(0.27, 0.17, 0.08, 1)
+        let trimOutlineColor = SIMD4<Float>(0.60, 0.46, 0.24, 1)
+        let landscapeAccentColor = SIMD4<Float>(0.58, 0.72, 0.82, 1)
+
+        appendBoxEdges(center: SIMD3<Float>(0, 0, -0.19), size: SIMD3<Float>(2.88, 1.94, 0.14), color: frameOutlineColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(0, 0, -0.155), size: SIMD3<Float>(2.22, 1.34, 0.05), color: trimOutlineColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(0, 0, -0.145), size: SIMD3<Float>(0.18, 1.34, 0.04), color: trimOutlineColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(0, 0, -0.145), size: SIMD3<Float>(2.22, 0.16, 0.04), color: trimOutlineColor, into: &vertices)
+        appendBoxEdges(center: SIMD3<Float>(0, -0.74, -0.12), size: SIMD3<Float>(2.34, 0.22, 0.18), color: frameOutlineColor, into: &vertices)
+
+        appendLine(from: SIMD3<Float>(-1.08, -0.06, -2.98), to: SIMD3<Float>(1.08, -0.06, -2.98), color: landscapeAccentColor, into: &vertices)
+        appendLine(from: SIMD3<Float>(-0.92, -0.22, -2.32), to: SIMD3<Float>(0.92, -0.22, -2.32), color: landscapeAccentColor, into: &vertices)
+
+        let treeCenters: [SIMD3<Float>] = [
+            SIMD3<Float>(-0.94, -0.28, -2.64),
+            SIMD3<Float>(0.88, -0.24, -2.52),
+            SIMD3<Float>(0.56, -0.18, -3.12)
+        ]
+        for center in treeCenters {
+            appendBoxEdges(center: center + SIMD3<Float>(0, -0.18, 0), size: SIMD3<Float>(0.06, 0.22, 0.06), color: frameOutlineColor, into: &vertices)
+            appendBoxEdges(center: center, size: SIMD3<Float>(0.32, 0.34, 0.12), color: landscapeAccentColor, into: &vertices)
         }
 
         return vertices
@@ -451,6 +483,86 @@ final class MetalRenderer: NSObject {
         return vertices
     }
 
+    private func buildWindowLandscapeTriangleVertices() -> [RenderVertex] {
+        let skyTopColor = SIMD4<Float>(0.42, 0.70, 0.95, 1)
+        let skyMidColor = SIMD4<Float>(0.68, 0.86, 0.98, 1)
+        let skyLowColor = SIMD4<Float>(0.84, 0.93, 0.99, 1)
+        let sunColor = SIMD4<Float>(0.99, 0.90, 0.63, 1)
+        let cloudColor = SIMD4<Float>(0.98, 0.98, 1.0, 1)
+        let farMountainColor = SIMD4<Float>(0.46, 0.58, 0.73, 1)
+        let midMountainColor = SIMD4<Float>(0.34, 0.48, 0.56, 1)
+        let nearHillColor = SIMD4<Float>(0.22, 0.46, 0.30, 1)
+        let meadowColor = SIMD4<Float>(0.34, 0.56, 0.28, 1)
+        let lakeColor = SIMD4<Float>(0.34, 0.63, 0.79, 1)
+        let trunkColor = SIMD4<Float>(0.36, 0.22, 0.12, 1)
+        let foliageColor = SIMD4<Float>(0.18, 0.42, 0.24, 1)
+        let frameWoodColor = SIMD4<Float>(0.54, 0.34, 0.18, 1)
+        let frameTrimColor = SIMD4<Float>(0.82, 0.67, 0.42, 1)
+        let shadowColor = SIMD4<Float>(0.20, 0.12, 0.06, 1)
+
+        var vertices: [RenderVertex] = []
+
+        vertices += makeBox(center: SIMD3<Float>(0, 0.92, -4.26), size: SIMD3<Float>(5.4, 1.48, 0.02), color: skyTopColor)
+        vertices += makeBox(center: SIMD3<Float>(0, 0.14, -4.25), size: SIMD3<Float>(5.4, 1.18, 0.02), color: skyMidColor)
+        vertices += makeBox(center: SIMD3<Float>(0, -0.56, -4.24), size: SIMD3<Float>(5.4, 0.86, 0.02), color: skyLowColor)
+
+        vertices += makeDiscBillboard(center: SIMD3<Float>(1.14, 0.76, -4.18), radius: 0.26, segments: 32, color: sunColor)
+        vertices += makeDiscBillboard(center: SIMD3<Float>(-0.82, 0.72, -3.92), radius: 0.12, segments: 24, color: cloudColor)
+        vertices += makeDiscBillboard(center: SIMD3<Float>(-0.66, 0.74, -3.91), radius: 0.14, segments: 24, color: cloudColor)
+        vertices += makeDiscBillboard(center: SIMD3<Float>(-0.50, 0.71, -3.90), radius: 0.11, segments: 24, color: cloudColor)
+        vertices += makeDiscBillboard(center: SIMD3<Float>(0.24, 0.62, -3.78), radius: 0.10, segments: 20, color: cloudColor)
+        vertices += makeDiscBillboard(center: SIMD3<Float>(0.38, 0.65, -3.77), radius: 0.13, segments: 24, color: cloudColor)
+
+        vertices += makeMountainRange(
+            points: [
+                SIMD2<Float>(-2.7, -0.18), SIMD2<Float>(-1.95, 0.32), SIMD2<Float>(-1.24, -0.06),
+                SIMD2<Float>(-0.52, 0.46), SIMD2<Float>(0.12, -0.10), SIMD2<Float>(0.92, 0.30),
+                SIMD2<Float>(1.72, -0.12), SIMD2<Float>(2.7, 0.22)
+            ],
+            z: -3.88,
+            baseY: -0.60,
+            color: farMountainColor
+        )
+
+        vertices += makeMountainRange(
+            points: [
+                SIMD2<Float>(-2.7, -0.34), SIMD2<Float>(-2.05, 0.02), SIMD2<Float>(-1.34, -0.28),
+                SIMD2<Float>(-0.74, 0.18), SIMD2<Float>(-0.04, -0.22), SIMD2<Float>(0.74, 0.08),
+                SIMD2<Float>(1.34, -0.18), SIMD2<Float>(2.12, 0.04), SIMD2<Float>(2.7, -0.26)
+            ],
+            z: -3.36,
+            baseY: -0.72,
+            color: midMountainColor
+        )
+
+        vertices += makeHillBand(
+            points: [
+                SIMD2<Float>(-2.7, -0.52), SIMD2<Float>(-1.92, -0.30), SIMD2<Float>(-1.12, -0.42),
+                SIMD2<Float>(-0.18, -0.20), SIMD2<Float>(0.62, -0.36), SIMD2<Float>(1.48, -0.18),
+                SIMD2<Float>(2.7, -0.44)
+            ],
+            z: -2.82,
+            baseY: -1.02,
+            color: nearHillColor
+        )
+
+        vertices += makeBox(center: SIMD3<Float>(0.28, -0.44, -3.00), size: SIMD3<Float>(1.56, 0.28, 0.04), color: lakeColor)
+        vertices += makeBox(center: SIMD3<Float>(0, -0.88, -2.58), size: SIMD3<Float>(5.4, 0.44, 0.10), color: meadowColor)
+
+        vertices += makeLandscapeTree(center: SIMD3<Float>(-0.94, -0.28, -2.64), trunkColor: trunkColor, foliageColor: foliageColor)
+        vertices += makeLandscapeTree(center: SIMD3<Float>(0.88, -0.24, -2.52), trunkColor: trunkColor, foliageColor: foliageColor)
+        vertices += makeLandscapeTree(center: SIMD3<Float>(0.56, -0.18, -3.12), trunkColor: trunkColor, foliageColor: foliageColor)
+        vertices += makeLandscapeTree(center: SIMD3<Float>(-1.42, -0.20, -3.04), trunkColor: trunkColor, foliageColor: foliageColor)
+
+        vertices += makeShadedBox(center: SIMD3<Float>(0, 0, -0.19), size: SIMD3<Float>(2.88, 1.94, 0.14), color: frameWoodColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, 0, -0.155), size: SIMD3<Float>(2.22, 1.34, 0.05), color: frameTrimColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, 0, -0.145), size: SIMD3<Float>(0.18, 1.34, 0.04), color: frameWoodColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, 0, -0.145), size: SIMD3<Float>(2.22, 0.16, 0.04), color: frameWoodColor)
+        vertices += makeShadedBox(center: SIMD3<Float>(0, -0.74, -0.12), size: SIMD3<Float>(2.34, 0.22, 0.18), color: shadowColor)
+
+        return vertices
+    }
+
     private func buildArtworkQuadVertices(for environment: RenderEnvironment) -> [RenderVertex] {
         let aspectRatio = artworkAspectRatio
         switch environment {
@@ -475,7 +587,66 @@ final class MetalRenderer: NSObject {
                 maxHeight: 1.96,
                 aspectRatio: aspectRatio
             )
+        case .windowLandscape:
+            return makeTexturedBillboard(
+                center: SIMD3<Float>(0.28, -0.44, -2.98),
+                maxWidth: 1.56,
+                maxHeight: 0.28,
+                aspectRatio: aspectRatio
+            )
         }
+    }
+
+    private func makeMountainRange(
+        points: [SIMD2<Float>],
+        z: Float,
+        baseY: Float,
+        color: SIMD4<Float>
+    ) -> [RenderVertex] {
+        guard points.count >= 2 else { return [] }
+
+        var vertices: [RenderVertex] = []
+        for index in 0..<(points.count - 1) {
+            let left = points[index]
+            let right = points[index + 1]
+            let bottomLeft = SIMD3<Float>(left.x, baseY, z)
+            let topLeft = SIMD3<Float>(left.x, left.y, z)
+            let topRight = SIMD3<Float>(right.x, right.y, z)
+            let bottomRight = SIMD3<Float>(right.x, baseY, z)
+
+            vertices += [
+                RenderVertex(position: bottomLeft, color: color),
+                RenderVertex(position: topLeft, color: color),
+                RenderVertex(position: topRight, color: color),
+                RenderVertex(position: bottomLeft, color: color),
+                RenderVertex(position: topRight, color: color),
+                RenderVertex(position: bottomRight, color: color)
+            ]
+        }
+
+        return vertices
+    }
+
+    private func makeHillBand(
+        points: [SIMD2<Float>],
+        z: Float,
+        baseY: Float,
+        color: SIMD4<Float>
+    ) -> [RenderVertex] {
+        makeMountainRange(points: points, z: z, baseY: baseY, color: color)
+    }
+
+    private func makeLandscapeTree(
+        center: SIMD3<Float>,
+        trunkColor: SIMD4<Float>,
+        foliageColor: SIMD4<Float>
+    ) -> [RenderVertex] {
+        var vertices: [RenderVertex] = []
+        vertices += makeShadedBox(center: center + SIMD3<Float>(0, -0.18, 0), size: SIMD3<Float>(0.06, 0.22, 0.06), color: trunkColor)
+        vertices += makeDiscBillboard(center: center + SIMD3<Float>(0, 0.04, 0), radius: 0.18, segments: 24, color: foliageColor)
+        vertices += makeDiscBillboard(center: center + SIMD3<Float>(-0.10, 0.01, 0.02), radius: 0.14, segments: 22, color: foliageColor)
+        vertices += makeDiscBillboard(center: center + SIMD3<Float>(0.10, 0.0, -0.02), radius: 0.15, segments: 22, color: foliageColor)
+        return vertices
     }
 
     private var artworkAspectRatio: Float {
@@ -768,6 +939,8 @@ final class MetalRenderer: NSObject {
             MTLClearColor(red: 0.01, green: 0.01, blue: 0.02, alpha: 1)
         case .theaterScreen:
             MTLClearColor(red: 0.01, green: 0.005, blue: 0.01, alpha: 1)
+        case .windowLandscape:
+            MTLClearColor(red: 0.77, green: 0.88, blue: 0.98, alpha: 1)
         }
     }
 

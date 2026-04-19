@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Added a new `Window Landscape` Metal environment with a layered sky, mountains, lake/meadow bands, billboard trees, and a close foreground window frame plus mullions so the viewport reads as looking through a real window into a distant scene.
+- Reused the existing environment switcher/test coverage so the new scenic view drops into the same off-axis projection path without disturbing calibration or tracking behavior.
+- Files/components affected: `App/AppModel.swift`, `Rendering/MetalRenderer.swift`, `HeadTrackedPlaygroundTests/HeadTrackedPlaygroundTests.swift`, `README.md`.
+- Reason: give the playground a more literal and visually convincing “looking through a window” target scene for head-coupled parallax evaluation.
 - Re-tuned the `Theater Screen` environment so the projection surface is physically larger, which makes close viewing crop more of the image while backing away reveals more of the fixed screen as expected under off-axis projection.
 - Removed the decorative theater seat rows to keep the scene focused on the screen silhouette and stage cues.
 - Files/components affected: `Rendering/MetalRenderer.swift`, `README.md`.

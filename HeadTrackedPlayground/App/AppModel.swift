@@ -7,6 +7,7 @@ enum RenderEnvironment: String, CaseIterable, Identifiable {
     case workspaceRoom
     case targetTunnel
     case theaterScreen
+    case windowLandscape
 
     var id: Self { self }
 
@@ -18,6 +19,8 @@ enum RenderEnvironment: String, CaseIterable, Identifiable {
             "Target Tunnel"
         case .theaterScreen:
             "Theater Screen"
+        case .windowLandscape:
+            "Window Landscape"
         }
     }
 
@@ -29,6 +32,8 @@ enum RenderEnvironment: String, CaseIterable, Identifiable {
             "Tunnel"
         case .theaterScreen:
             "Theater"
+        case .windowLandscape:
+            "Window"
         }
     }
 
@@ -40,6 +45,8 @@ enum RenderEnvironment: String, CaseIterable, Identifiable {
             "Billboard targets + depth frames"
         case .theaterScreen:
             "Auditorium depth + big screen"
+        case .windowLandscape:
+            "Foreground frame + scenic depth"
         }
     }
 }
