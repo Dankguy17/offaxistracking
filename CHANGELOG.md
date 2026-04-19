@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Added a dedicated `Theater Screen` Metal environment with auditorium walls, seating rows, aisle markers, and a large projection surface tuned for evaluating a flat image as a cinema-style screen in depth.
+- Extended the environment selector metadata and tests so the new auditorium scene appears alongside the workspace and tunnel modes.
+- Files/components affected: `App/AppModel.swift`, `Rendering/MetalRenderer.swift`, `HeadTrackedPlaygroundTests/HeadTrackedPlaygroundTests.swift`, `README.md`.
+- Reason: provide a purpose-built scene for judging whether a loaded image stays locked to a theater-style screen as head-coupled perspective changes.
 - Added environment artwork support so an operator can choose an image from disk and map it onto a theater-style screen inside the active Metal scene.
 - Extended the shared Metal vertex/fragment pipeline to support textured quads while preserving the existing colored wireframe and solid geometry rendering path.
 - Added inspector controls for choosing and clearing the active screen image, plus a small regression test for artwork naming.

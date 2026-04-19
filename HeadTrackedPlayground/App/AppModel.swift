@@ -6,6 +6,7 @@ import UniformTypeIdentifiers
 enum RenderEnvironment: String, CaseIterable, Identifiable {
     case workspaceRoom
     case targetTunnel
+    case theaterScreen
 
     var id: Self { self }
 
@@ -15,6 +16,8 @@ enum RenderEnvironment: String, CaseIterable, Identifiable {
             "Workspace Room"
         case .targetTunnel:
             "Target Tunnel"
+        case .theaterScreen:
+            "Theater Screen"
         }
     }
 
@@ -24,6 +27,8 @@ enum RenderEnvironment: String, CaseIterable, Identifiable {
             "Workspace"
         case .targetTunnel:
             "Tunnel"
+        case .theaterScreen:
+            "Theater"
         }
     }
 
@@ -33,6 +38,8 @@ enum RenderEnvironment: String, CaseIterable, Identifiable {
             "Desk + room anchors"
         case .targetTunnel:
             "Billboard targets + depth frames"
+        case .theaterScreen:
+            "Auditorium depth + big screen"
         }
     }
 }

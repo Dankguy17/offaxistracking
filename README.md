@@ -17,7 +17,7 @@ Native Xcode macOS app scaffold with an end-to-end prototype slice in place:
 - Vision-powered single-face acquisition, box tracking, and landmark overlay
 - coarse face-box fallback when landmarks temporarily disappear
 - raw and smoothed head-pose estimation for `x`, `y`, and approximate `z`
-- MetalKit renderer with switchable environments: a shaded 3D workspace room and a target-tunnel scene with near-3D billboard objects
+- MetalKit renderer with switchable environments: a shaded 3D workspace room, a target-tunnel scene with near-3D billboard objects, and a theater-screen auditorium view for judging flat-image stability
 - optional custom screen artwork loaded from disk and projected onto a theater-style rear screen inside either Metal environment
 - workspace room now includes a suspended demo object above the floor so floating depth cues are easy to judge during head motion
 - real-time off-axis projection updates driven by the smoothed head pose
@@ -38,7 +38,7 @@ Native Xcode macOS app scaffold with an end-to-end prototype slice in place:
 On first launch, the app requests macOS camera permission and starts the webcam preview automatically.
 Once a face is acquired, the app tracks a single primary face between frames, overlays the tracked face box plus available landmark strokes on the preview, and keeps coarse pose tracking alive briefly if landmarks drop out.
 The Metal viewport renders a switchable scene set with live off-axis projection driven by the smoothed pose values from the inspector.
-Use the `Scene` control in the inspector to swap between the workspace room and the target tunnel environment.
+Use the `Scene` control in the inspector to swap between the workspace room, the target tunnel, and the theater-screen auditorium environment.
 Use `Choose Image` in the `Scene` section to place a picture on the in-scene rear projection screen. The renderer preserves the image aspect ratio and fits it within the screen bounds.
 Enable `Freeze Projection` in the inspector to hold the currently applied scene projection steady while pose values and tracking debug output continue updating.
 Use `Mirror Webcam` in the calibration inspector if your camera feed appears mirrored and horizontal motion feels inverted relative to the rendered scene.

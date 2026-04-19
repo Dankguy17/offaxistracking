@@ -239,9 +239,10 @@ final class HeadTrackedPlaygroundTests: XCTestCase {
     }
 
     func testRenderEnvironmentExposesStableSceneOptions() {
-        XCTAssertEqual(RenderEnvironment.allCases.map(\.displayName), ["Workspace Room", "Target Tunnel"])
+        XCTAssertEqual(RenderEnvironment.allCases.map(\.displayName), ["Workspace Room", "Target Tunnel", "Theater Screen"])
         XCTAssertEqual(RenderEnvironment.workspaceRoom.badgeTitle, "Desk + room anchors")
         XCTAssertEqual(RenderEnvironment.targetTunnel.badgeTitle, "Billboard targets + depth frames")
+        XCTAssertEqual(RenderEnvironment.theaterScreen.badgeTitle, "Auditorium depth + big screen")
     }
 
     func testEnvironmentArtworkDisplayNameStripsPathAndExtension() {
