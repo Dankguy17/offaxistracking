@@ -1,6 +1,11 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Added environment artwork support so an operator can choose an image from disk and map it onto a theater-style screen inside the active Metal scene.
+- Extended the shared Metal vertex/fragment pipeline to support textured quads while preserving the existing colored wireframe and solid geometry rendering path.
+- Added inspector controls for choosing and clearing the active screen image, plus a small regression test for artwork naming.
+- Files/components affected: `Models/EnvironmentArtwork.swift`, `App/AppModel.swift`, `UI/InspectorPanel.swift`, `UI/RendererPanelPlaceholderView.swift`, `Rendering/MetalRenderer.swift`, `HeadTrackedPlaygroundTests/HeadTrackedPlaygroundTests.swift`, `README.md`, `HeadTrackedPlayground.xcodeproj`.
+- Reason: let users anchor the parallax illusion against familiar flat imagery that behaves like a theater or projection screen inside the environment.
 - Added paper-based auto-calibration that detects a held-up A4 or 8.5 x 11 inch sheet with Vision rectangle detection, estimates neutral viewer distance from the sheet's known size, and applies that measurement back into the saved calibration profile.
 - Added an operator-facing auto-calibration UI, live camera overlay for the detected paper target, and regression tests for the paper-size geometry estimator.
 - Files/components affected: `Calibration/PaperCalibrationEstimator.swift`, `Calibration/PaperCalibrationService.swift`, `Models/PaperCalibration.swift`, `App/AppModel.swift`, `Camera/CameraCaptureService.swift`, `UI/InspectorPanel.swift`, `UI/CameraPanelPlaceholderView.swift`, `UI/FaceTrackingOverlayView.swift`, `HeadTrackedPlaygroundTests/HeadTrackedPlaygroundTests.swift`, `README.md`.

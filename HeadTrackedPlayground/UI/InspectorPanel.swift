@@ -89,6 +89,27 @@ struct InspectorPanel: View {
                         }
                     }
                     .pickerStyle(.segmented)
+
+                    Text("Map an image onto a rear projection screen inside the active scene.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+
+                    if let artwork = appModel.environmentArtwork {
+                        LabeledContent("Screen Image", value: artwork.displayName)
+                    } else {
+                        LabeledContent("Screen Image", value: "None")
+                    }
+
+                    HStack {
+                        Button("Choose Image") {
+                            appModel.chooseEnvironmentArtwork()
+                        }
+
+                        Button("Clear Image") {
+                            appModel.clearEnvironmentArtwork()
+                        }
+                        .disabled(appModel.environmentArtwork == nil)
+                    }
                 }
 
                 GroupBox("Debug") {

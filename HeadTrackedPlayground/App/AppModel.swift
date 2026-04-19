@@ -1,5 +1,7 @@
 import Combine
 import Foundation
+import AppKit
+import UniformTypeIdentifiers
 
 enum RenderEnvironment: String, CaseIterable, Identifiable {
     case workspaceRoom
@@ -45,6 +47,7 @@ final class AppModel: ObservableObject {
     @Published var debugMetrics: DebugMetrics
     @Published var isProjectionFrozen: Bool
     @Published var selectedEnvironment: RenderEnvironment
+    @Published var environmentArtwork: EnvironmentArtwork?
     @Published var paperCalibrationTarget: PaperCalibrationTarget
     @Published var paperCalibrationState: PaperCalibrationState
 
@@ -81,6 +84,7 @@ final class AppModel: ObservableObject {
         debugMetrics = .zero
         isProjectionFrozen = false
         selectedEnvironment = .workspaceRoom
+        environmentArtwork = nil
         paperCalibrationTarget = .auto
         paperCalibrationState = .idle
 
@@ -124,6 +128,14 @@ final class AppModel: ObservableObject {
             .store(in: &cancellables)
 
         $selectedEnvironment
+            .dropFirst()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateRendererState()
+            }
+            .store(in: &cancellables)
+
+        $environmentArtwork
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
@@ -186,6 +198,23 @@ final class AppModel: ObservableObject {
         persistCalibration()
     }
 
+    func chooseEnvironmentArtwork() {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.image]
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.canCreateDirectories = false
+        panel.prompt = "Add Image"
+        panel.message = "Choose an image to map onto the in-scene theater screen."
+
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        environmentArtwork = EnvironmentArtwork(imageURL: url)
+    }
+
+    func clearEnvironmentArtwork() {
+        environmentArtwork = nil
+    }
+
     func persistCalibration() {
         do {
             try calibrationManager.saveProfile(calibrationProfile)
@@ -218,6 +247,7 @@ final class AppModel: ObservableObject {
             pose: smoothedPose,
             calibration: calibrationProfile,
             environment: selectedEnvironment,
+            artwork: environmentArtwork,
             isFrozen: isProjectionFrozen
         )
     }

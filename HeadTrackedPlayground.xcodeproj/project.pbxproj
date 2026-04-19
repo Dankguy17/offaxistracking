@@ -27,6 +27,7 @@
 		A0000000000000000000003B /* PoseEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000003C /* PoseEstimator.swift */; };
 		A0000000000000000000003D /* PoseSmoother.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000003E /* PoseSmoother.swift */; };
 		A0000000000000000000003F /* ProjectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000040 /* ProjectionEngine.swift */; };
+		A0000000000000000000008D /* EnvironmentArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000008E /* EnvironmentArtwork.swift */; };
 		A00000000000000000000083 /* MetalRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000084 /* MetalRenderer.swift */; };
 		A00000000000000000000085 /* MetalViewport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000086 /* MetalViewport.swift */; };
 		A00000000000000000000087 /* PaperCalibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000088 /* PaperCalibration.swift */; };
@@ -60,6 +61,7 @@
 		A0000000000000000000003C /* PoseEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseEstimator.swift; sourceTree = "<group>"; };
 		A0000000000000000000003E /* PoseSmoother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseSmoother.swift; sourceTree = "<group>"; };
 		A00000000000000000000040 /* ProjectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectionEngine.swift; sourceTree = "<group>"; };
+		A0000000000000000000008E /* EnvironmentArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentArtwork.swift; sourceTree = "<group>"; };
 		A00000000000000000000084 /* MetalRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRenderer.swift; sourceTree = "<group>"; };
 		A00000000000000000000086 /* MetalViewport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalViewport.swift; sourceTree = "<group>"; };
 		A00000000000000000000088 /* PaperCalibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperCalibration.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 				A00000000000000000000019 /* CalibrationProfile.swift */,
 				A00000000000000000000020 /* CameraFrame.swift */,
 				A0000000000000000000001B /* DebugMetrics.swift */,
+				A0000000000000000000008E /* EnvironmentArtwork.swift */,
 				A00000000000000000000016 /* HeadPose.swift */,
 				A00000000000000000000088 /* PaperCalibration.swift */,
 				A0000000000000000000001A /* ProjectionParameters.swift */,
@@ -342,6 +345,7 @@
 				A00000000000000000000030 /* CameraFrame.swift in Sources */,
 				A00000000000000000000035 /* CameraSessionPreview.swift in Sources */,
 				A0000000000000000000002B /* DebugMetrics.swift in Sources */,
+				A0000000000000000000008D /* EnvironmentArtwork.swift in Sources */,
 				A00000000000000000000039 /* FaceTrackingOverlayView.swift in Sources */,
 				A00000000000000000000037 /* FaceTrackingService.swift in Sources */,
 				A00000000000000000000026 /* HeadPose.swift in Sources */,

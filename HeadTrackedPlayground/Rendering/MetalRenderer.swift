@@ -17,10 +17,13 @@ final class MetalRenderer: NSObject {
     private var triangleVertexBuffer: MTLBuffer?
     private var lineVertexCount = 0
     private var triangleVertexCount = 0
+    private var fallbackTexture: MTLTexture?
+    private var artworkTexture: MTLTexture?
 
     private var currentPose = HeadPose.neutral
     private var currentCalibration = CalibrationProfile.default
     private var currentEnvironment = RenderEnvironment.workspaceRoom
+    private var currentArtwork: EnvironmentArtwork?
     private var isProjectionFrozen = false
     private var frozenProjectionParameters: ProjectionParameters?
     private var fpsFrameCount = 0
@@ -39,17 +42,33 @@ final class MetalRenderer: NSObject {
         if commandQueue == nil {
             commandQueue = device.makeCommandQueue()
             buildPipeline(device: device, view: view)
+            fallbackTexture = buildFallbackTexture(device: device)
             buildScene(device: device)
         }
     }
 
-    func update(pose: HeadPose, calibration: CalibrationProfile, environment: RenderEnvironment, isFrozen: Bool) {
+    func update(
+        pose: HeadPose,
+        calibration: CalibrationProfile,
+        environment: RenderEnvironment,
+        artwork: EnvironmentArtwork?,
+        isFrozen: Bool
+    ) {
         currentPose = pose
         currentCalibration = calibration
         if currentEnvironment != environment {
             currentEnvironment = environment
             frozenProjectionParameters = nil
             if let device {
+                buildScene(device: device)
+            }
+        }
+
+        if currentArtwork != artwork {
+            currentArtwork = artwork
+            frozenProjectionParameters = nil
+            if let device {
+                artworkTexture = loadArtworkTexture(for: artwork, device: device)
                 buildScene(device: device)
             }
         }
@@ -72,6 +91,12 @@ final class MetalRenderer: NSObject {
         vertexDescriptor.attributes[1].format = .float4
         vertexDescriptor.attributes[1].offset = MemoryLayout<SIMD3<Float>>.stride
         vertexDescriptor.attributes[1].bufferIndex = 0
+        vertexDescriptor.attributes[2].format = .float2
+        vertexDescriptor.attributes[2].offset = MemoryLayout<SIMD3<Float>>.stride + MemoryLayout<SIMD4<Float>>.stride
+        vertexDescriptor.attributes[2].bufferIndex = 0
+        vertexDescriptor.attributes[3].format = .float
+        vertexDescriptor.attributes[3].offset = MemoryLayout<SIMD3<Float>>.stride + MemoryLayout<SIMD4<Float>>.stride + MemoryLayout<SIMD2<Float>>.stride
+        vertexDescriptor.attributes[3].bufferIndex = 0
         vertexDescriptor.layouts[0].stride = MemoryLayout<RenderVertex>.stride
 
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -110,12 +135,19 @@ final class MetalRenderer: NSObject {
     }
 
     private func buildTriangleVertices(for environment: RenderEnvironment) -> [RenderVertex] {
+        var vertices: [RenderVertex]
         switch environment {
         case .workspaceRoom:
-            return buildWorkspaceTriangleVertices()
+            vertices = buildWorkspaceTriangleVertices()
         case .targetTunnel:
-            return buildTargetTunnelTriangleVertices()
+            vertices = buildTargetTunnelTriangleVertices()
         }
+
+        if artworkTexture != nil {
+            vertices += buildArtworkQuadVertices(for: environment)
+        }
+
+        return vertices
     }
 
     private func buildWorkspaceLineVertices() -> [RenderVertex] {
@@ -332,6 +364,64 @@ final class MetalRenderer: NSObject {
         }
 
         return vertices
+    }
+
+    private func buildArtworkQuadVertices(for environment: RenderEnvironment) -> [RenderVertex] {
+        let aspectRatio = artworkAspectRatio
+        switch environment {
+        case .workspaceRoom:
+            return makeTexturedBillboard(
+                center: SIMD3<Float>(0, 0.28, -3.205),
+                maxWidth: 1.72,
+                maxHeight: 0.96,
+                aspectRatio: aspectRatio
+            )
+        case .targetTunnel:
+            return makeTexturedBillboard(
+                center: SIMD3<Float>(0, 0, -3.045),
+                maxWidth: 2.18,
+                maxHeight: 1.22,
+                aspectRatio: aspectRatio
+            )
+        }
+    }
+
+    private var artworkAspectRatio: Float {
+        guard let artworkTexture, artworkTexture.height > 0 else { return 16.0 / 9.0 }
+        return Float(artworkTexture.width) / Float(artworkTexture.height)
+    }
+
+    private func makeTexturedBillboard(
+        center: SIMD3<Float>,
+        maxWidth: Float,
+        maxHeight: Float,
+        aspectRatio: Float
+    ) -> [RenderVertex] {
+        let safeAspectRatio = max(aspectRatio, 0.1)
+        var width = maxWidth
+        var height = width / safeAspectRatio
+
+        if height > maxHeight {
+            height = maxHeight
+            width = height * safeAspectRatio
+        }
+
+        let halfWidth = width * 0.5
+        let halfHeight = height * 0.5
+
+        let bottomLeft = SIMD3<Float>(center.x - halfWidth, center.y - halfHeight, center.z)
+        let bottomRight = SIMD3<Float>(center.x + halfWidth, center.y - halfHeight, center.z)
+        let topLeft = SIMD3<Float>(center.x - halfWidth, center.y + halfHeight, center.z)
+        let topRight = SIMD3<Float>(center.x + halfWidth, center.y + halfHeight, center.z)
+
+        return [
+            RenderVertex(position: bottomLeft, color: SIMD4<Float>(1, 1, 1, 1), textureCoordinate: SIMD2<Float>(0, 1), textureMix: 1),
+            RenderVertex(position: bottomRight, color: SIMD4<Float>(1, 1, 1, 1), textureCoordinate: SIMD2<Float>(1, 1), textureMix: 1),
+            RenderVertex(position: topRight, color: SIMD4<Float>(1, 1, 1, 1), textureCoordinate: SIMD2<Float>(1, 0), textureMix: 1),
+            RenderVertex(position: bottomLeft, color: SIMD4<Float>(1, 1, 1, 1), textureCoordinate: SIMD2<Float>(0, 1), textureMix: 1),
+            RenderVertex(position: topRight, color: SIMD4<Float>(1, 1, 1, 1), textureCoordinate: SIMD2<Float>(1, 0), textureMix: 1),
+            RenderVertex(position: topLeft, color: SIMD4<Float>(1, 1, 1, 1), textureCoordinate: SIMD2<Float>(0, 0), textureMix: 1)
+        ]
     }
 
     private func makeBox(center: SIMD3<Float>, size: SIMD3<Float>, color: SIMD4<Float>) -> [RenderVertex] {
@@ -597,6 +687,43 @@ final class MetalRenderer: NSObject {
         fpsFrameCount = 0
         fpsWindowStart = now
     }
+
+    private func buildFallbackTexture(device: MTLDevice) -> MTLTexture? {
+        let descriptor = MTLTextureDescriptor.texture2DDescriptor(
+            pixelFormat: .rgba8Unorm,
+            width: 1,
+            height: 1,
+            mipmapped: false
+        )
+        descriptor.usage = .shaderRead
+
+        guard let texture = device.makeTexture(descriptor: descriptor) else { return nil }
+        var pixel: [UInt8] = [255, 255, 255, 255]
+        texture.replace(
+            region: MTLRegionMake2D(0, 0, 1, 1),
+            mipmapLevel: 0,
+            withBytes: &pixel,
+            bytesPerRow: 4
+        )
+        return texture
+    }
+
+    private func loadArtworkTexture(for artwork: EnvironmentArtwork?, device: MTLDevice) -> MTLTexture? {
+        guard let artwork else { return nil }
+
+        let textureLoader = MTKTextureLoader(device: device)
+        let options: [MTKTextureLoader.Option: Any] = [
+            .origin: MTKTextureLoader.Origin.flippedVertically,
+            .SRGB: false
+        ]
+
+        do {
+            return try textureLoader.newTexture(URL: artwork.imageURL, options: options)
+        } catch {
+            print("Failed to load environment artwork texture: \(error.localizedDescription)")
+            return nil
+        }
+    }
 }
 
 extension MetalRenderer: MTKViewDelegate {
@@ -653,6 +780,7 @@ extension MetalRenderer: MTKViewDelegate {
         encoder.setRenderPipelineState(pipelineState)
         encoder.setDepthStencilState(depthState)
         encoder.setVertexBytes(&uniforms, length: MemoryLayout<RenderUniforms>.stride, index: 1)
+        encoder.setFragmentTexture(artworkTexture ?? fallbackTexture, index: 0)
 
         encoder.setVertexBuffer(lineVertexBuffer, offset: 0, index: 0)
         encoder.drawPrimitives(type: .line, vertexStart: 0, vertexCount: lineVertexCount)
@@ -671,6 +799,8 @@ extension MetalRenderer: MTKViewDelegate {
 private struct RenderVertex {
     var position: SIMD3<Float>
     var color: SIMD4<Float>
+    var textureCoordinate: SIMD2<Float> = .zero
+    var textureMix: Float = 0
 }
 
 private struct RenderUniforms {
@@ -685,6 +815,8 @@ private extension MetalRenderer {
     struct VertexIn {
         float3 position [[attribute(0)]];
         float4 color [[attribute(1)]];
+        float2 textureCoordinate [[attribute(2)]];
+        float textureMix [[attribute(3)]];
     };
 
     struct RenderUniforms {
@@ -694,17 +826,23 @@ private extension MetalRenderer {
     struct VertexOut {
         float4 position [[position]];
         float4 color;
+        float2 textureCoordinate;
+        float textureMix;
     };
 
     vertex VertexOut sceneVertex(VertexIn in [[stage_in]], constant RenderUniforms& uniforms [[buffer(1)]]) {
         VertexOut out;
         out.position = uniforms.mvpMatrix * float4(in.position, 1.0);
         out.color = in.color;
+        out.textureCoordinate = in.textureCoordinate;
+        out.textureMix = in.textureMix;
         return out;
     }
 
-    fragment float4 sceneFragment(VertexOut in [[stage_in]]) {
-        return in.color;
+    fragment float4 sceneFragment(VertexOut in [[stage_in]], texture2d<float> sceneTexture [[texture(0)]]) {
+        constexpr sampler textureSampler(mag_filter::linear, min_filter::linear);
+        float4 sampled = sceneTexture.sample(textureSampler, in.textureCoordinate);
+        return mix(in.color, sampled, in.textureMix);
     }
     """
 }

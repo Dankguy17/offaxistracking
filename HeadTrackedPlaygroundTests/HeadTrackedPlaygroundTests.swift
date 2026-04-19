@@ -243,4 +243,10 @@ final class HeadTrackedPlaygroundTests: XCTestCase {
         XCTAssertEqual(RenderEnvironment.workspaceRoom.badgeTitle, "Desk + room anchors")
         XCTAssertEqual(RenderEnvironment.targetTunnel.badgeTitle, "Billboard targets + depth frames")
     }
+
+    func testEnvironmentArtworkDisplayNameStripsPathAndExtension() {
+        let artwork = EnvironmentArtwork(imageURL: URL(fileURLWithPath: "/tmp/posters/my-show-poster.png"))
+
+        XCTAssertEqual(artwork.displayName, "my-show-poster")
+    }
 }

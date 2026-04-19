@@ -30,6 +30,7 @@ struct RendererPanelPlaceholderView: View {
 
             HStack(spacing: 24) {
                 StatBadge(title: "Environment", value: appModel.selectedEnvironment.shortLabel)
+                StatBadge(title: "Screen Art", value: appModel.environmentArtwork?.displayName ?? "None")
                 StatBadge(title: "Render FPS", value: appModel.debugMetrics.renderFPS.formatted(.number.precision(.fractionLength(1))))
                 StatBadge(title: "Freeze", value: appModel.isProjectionFrozen ? "On" : "Off")
                 StatBadge(title: "Pose Z", value: appModel.smoothedPose.z.formatted(.number.precision(.fractionLength(3))))
