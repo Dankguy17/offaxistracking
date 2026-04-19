@@ -9,9 +9,10 @@ struct RootView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Head-Tracked 3D Window Playground")
                         .font(.system(size: 30, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color(red: 0.16, green: 0.17, blue: 0.14))
 
                     Text("Live webcam tracking, calibrated pose estimation, and a Metal off-axis viewport for evaluating head-tracked parallax.")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color(red: 0.32, green: 0.33, blue: 0.31))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -25,6 +26,7 @@ struct RootView: View {
 
             InspectorPanel()
         }
+        .foregroundStyle(Color(red: 0.17, green: 0.18, blue: 0.19))
         .background(
             LinearGradient(
                 colors: [

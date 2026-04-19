@@ -133,7 +133,11 @@ struct InspectorPanel: View {
             .padding(20)
         }
         .frame(minWidth: 320, idealWidth: 340, maxWidth: 360)
-        .background(.ultraThinMaterial)
+        .background(
+            Color.white.opacity(0.84)
+                .shadow(color: Color.black.opacity(0.08), radius: 12, x: -4, y: 0)
+        )
+        .foregroundStyle(Color(red: 0.17, green: 0.18, blue: 0.19))
         .onChange(of: appModel.calibrationProfile) { _, _ in
             appModel.persistCalibration()
         }

@@ -62,7 +62,14 @@ struct CameraPanelPlaceholderView: View {
             }
         }
         .padding(20)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 28, style: .continuous))
+        .background(
+            RoundedRectangle(cornerRadius: 28, style: .continuous)
+                .fill(Color.white.opacity(0.78))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 28, style: .continuous)
+                .stroke(Color.black.opacity(0.08), lineWidth: 1)
+        )
     }
 
     private var bannerSubtitle: String {
@@ -104,9 +111,10 @@ private struct StatBadge: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title.uppercased())
                 .font(.caption2.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.secondary)
             Text(value)
                 .font(.headline.monospacedDigit())
+                .foregroundStyle(Color.primary)
         }
     }
 }
@@ -119,12 +127,16 @@ private struct CameraStatusBanner: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(.headline)
+                .foregroundStyle(.white)
             Text(subtitle)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.white.opacity(0.82))
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 10)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(Color.black.opacity(0.32))
+        )
     }
 }

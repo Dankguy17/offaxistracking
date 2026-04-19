@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## 2026-04-18
+- Replaced the subtle in-scene frame treatment with a true foreground SwiftUI window-frame overlay for the `Window Landscape` environment so the renderer now clearly reads as looking through divided panes.
+- Increased panel/inspector surface opacity and pinned key text styles so the brighter landscape scene no longer washes out the menu or status copy.
+- Files/components affected: `UI/RendererPanelPlaceholderView.swift`, `UI/CameraPanelPlaceholderView.swift`, `UI/InspectorPanel.swift`, `UI/RootView.swift`.
+- Reason: fix the missing foreground-window cue and restore readable control contrast after the bright landscape scene exposed weaknesses in the previous translucent UI styling.
 - Added a new `Window Landscape` Metal environment with a layered sky, mountains, lake/meadow bands, billboard trees, and a close foreground window frame plus mullions so the viewport reads as looking through a real window into a distant scene.
 - Reused the existing environment switcher/test coverage so the new scenic view drops into the same off-axis projection path without disturbing calibration or tracking behavior.
 - Files/components affected: `App/AppModel.swift`, `Rendering/MetalRenderer.swift`, `HeadTrackedPlaygroundTests/HeadTrackedPlaygroundTests.swift`, `README.md`.
